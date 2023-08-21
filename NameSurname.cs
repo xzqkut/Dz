@@ -10,13 +10,11 @@ namespace perestanovka
     {
         static void Main(string[] args)
         {
-            string name = "Pavel";
-            string surName = "Yakovlev";
-            Console.WriteLine(name+" "+surName);
-            Console.ReadLine();
-            string trueName;
-            trueName = surName + " " + name;
-            Console.WriteLine(trueName);
+            string a = "Pavel";
+            string b = "Yakovlev";
+            Console.WriteLine($"{a}+{b}");
+            (a, b) = (b, a);
+            Console.WriteLine($"{a}+{b}");
         }
     }
 }
