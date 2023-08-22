@@ -10,12 +10,12 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            int row = 3;
-            int albumPictures = 52;
-            int everythingIsPossible = albumPictures % row;
-            int fitPictures = albumPictures / row;
-            Console.WriteLine($"Поместилось {fitPictures}.") ;
-            Console.WriteLine($"Осталось {everythingIsPossible}.");
+            int picturesInRow = 3;
+            int picturesInAlbum = 52;
+            int redundantPictures = picturesInAlbum % picturesInRow;
+            int filledRows = picturesInAlbum / picturesInRow;
+            Console.WriteLine($"Поместилось {filledRows}.") ;
+            Console.WriteLine($"Осталось {redundantPictures}.");
         }
     }
 }
