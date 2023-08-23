@@ -13,6 +13,7 @@ namespace ConsoleApp4
             int numberOfOldLadies;
             int minutesPerPerson = 10;
             int timeConverter = 60;
+
             Console.Write("Введите кол-во старушек: ");
             numberOfOldLadies=Convert.ToInt32(Console.ReadLine());
 
