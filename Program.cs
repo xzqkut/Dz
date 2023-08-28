@@ -4,26 +4,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yakovlev
+namespace ConsoleApp7
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int pointsPlayer;
-            string messagesPlayer;
-            char tag = 'A';
-            double weightCharacter;
-            float heightCharacter;
-            decimal powerCharacter;
-            bool isOpen;
-            byte dataArray;
-            long bigData;
-            short smallNumbers;
-
-
+            string dayOfWeek;
+            Console.WriteLine("Введите день недели для открытия заметки, введите Exit для выхода");
+            dayOfWeek =Console.ReadLine();
             
+            {
+                switch(dayOfWeek)
+                {
+                    case "Понедельник":
+                    case "Четверг":
+                        Console.WriteLine("Работа");
+                        break;
+                    case "Вторник":
+                    case "Пятница":
+                        Console.WriteLine("Учеба");
+                        break;
+                    case "Среда":
+                    case "Всокресенье":
+                        Console.WriteLine("Курс");
+                        break;
+                    case "Суббота":
+                        Console.WriteLine("Отдых");
+                        break;
+                    case "Exit":
+                        Console.WriteLine("Досвидания");
+                        break;
+                        default: Console.WriteLine("Введены неверные данные");
+                        break;
+                       
+                }
+            }
 
+
+
+         
+            
         }
     }
 }
