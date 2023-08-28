@@ -4,47 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp7
+namespace ConsoleApp10
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string dayOfWeek;
-            Console.WriteLine("Введите день недели для открытия заметки, введите Exit для выхода");
-            dayOfWeek =Console.ReadLine();
-            
+            int totalAmountMessage;
+
+            Console.WriteLine("Введите количество сообщений:");
+            totalAmountMessage = Convert.ToInt32(Console.ReadLine());
+
+            for (int i = 0; i < totalAmountMessage; i++)
             {
-                switch(dayOfWeek)
-                {
-                    case "Понедельник":
-                    case "Четверг":
-                        Console.WriteLine("Работа");
-                        break;
-                    case "Вторник":
-                    case "Пятница":
-                        Console.WriteLine("Учеба");
-                        break;
-                    case "Среда":
-                    case "Всокресенье":
-                        Console.WriteLine("Курс");
-                        break;
-                    case "Суббота":
-                        Console.WriteLine("Отдых");
-                        break;
-                    case "Exit":
-                        Console.WriteLine("Досвидания");
-                        break;
-                        default: Console.WriteLine("Введены неверные данные");
-                        break;
-                       
-                }
+                Console.WriteLine("Привет,желаю тебе хорошего дня!");
             }
-
-
-
-         
-            
         }
     }
 }
