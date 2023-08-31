@@ -4,21 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp10
+namespace numberOrder
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int totalAmountMessage;
+            int startNumber = 5;
+            int step = 7;
+            int amountOfNumber = 14;
 
-            Console.WriteLine("Введите количество сообщений:");
-            totalAmountMessage = Convert.ToInt32(Console.ReadLine());
-
-            for (int i = 0; i < totalAmountMessage; i++)
+            for(int i = 0; i<amountOfNumber; i++)
             {
-                Console.WriteLine("Привет,желаю тебе хорошего дня!");
+                int currentNumber = startNumber + i * step;
+                Console.WriteLine(currentNumber);
             }
+
+
         }
     }
 }
