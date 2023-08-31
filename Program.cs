@@ -10,17 +10,14 @@ namespace numberOrder
     {
         static void Main(string[] args)
         {
-            int startNumber = 5;
+            int loverNumber = 5;
             int step = 7;
-            int amountOfNumber = 14;
+            int upperNumber = 100;
 
-            for(int i = 0; i<amountOfNumber; i++)
+            for (int i = 5; i<upperNumber; i+=step)
             {
-                int currentNumber = startNumber + i * step;
-                Console.WriteLine(currentNumber);
+                Console.WriteLine(i+" ");
             }
-
-
         }
     }
 }
