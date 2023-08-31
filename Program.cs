@@ -14,7 +14,7 @@ namespace numberOrder
             int step = 7;
             int upperNumber = 100;
 
-            for (int i = 5; i<upperNumber; i+=step)
+            for (int i = loverNumber; i<upperNumber; i+=step)
             {
                 Console.WriteLine(i+" ");
             }
