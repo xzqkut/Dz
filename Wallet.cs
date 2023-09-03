@@ -11,10 +11,12 @@ namespace wallet
     {
         static void Main(string[] args)
         {
+            string CommandExit = "Exit";
+
             float rublesInWallet;
             float dollarInWallet;
             float euroInWallet;
-            int usdToRub = 50, rubToUsd = 52, euToRub = 100, rubToEu = 98, euToUsd= 1, usdToEu = 2;
+            int usdToRub = 50, rubToUsd = 25, euToRub = 100, rubToEu = 20, euToUsd= 1, usdToEu = 2;
             float exchangeCurrencyCount;
             string disairedOperation;
 
@@ -52,6 +54,7 @@ namespace wallet
                         Console.WriteLine("Недопустимое кол-во рублей");
                     }
                     break;
+
                     case "2":
                     Console.WriteLine("Обмен доллары на рубли");
                     Console.WriteLine("Сколько вы хотите обменять?");
@@ -67,6 +70,7 @@ namespace wallet
                     }
 
                     break;
+
                     case "3":
                     Console.WriteLine("Обмен рублей на евро");
                     Console.WriteLine("Сколько вы хотите обменять?");
@@ -81,6 +85,7 @@ namespace wallet
                         Console.WriteLine("Недопустимое кол-во рублей");
                     }
                     break;
+
                     case "4":
                     Console.WriteLine("Обмен евро на рубли");
                     Console.WriteLine("Сколько вы хотите обменять?");
@@ -95,6 +100,7 @@ namespace wallet
                         Console.WriteLine("Недопустимое кол-во евро");
                     }
                     break;
+
                     case "5":
                     Console.WriteLine("Обмен евро на доллар");
                     Console.WriteLine("Сколько вы хотите обменять?");
@@ -110,6 +116,7 @@ namespace wallet
                     }
 
                     break;
+
                         case "6":
                     Console.WriteLine("Обмен доллара на евро");
                     Console.WriteLine("Сколько вы хотите обменять?");
@@ -123,16 +130,19 @@ namespace wallet
                     {
                         Console.WriteLine("Недопустимое кол-во долларов");
                     }
-
                     break;
+
                 default: Console.WriteLine("Введена неверная операция.");
                     break;
             }
-
             Console.WriteLine($"Ваш баланс: {rublesInWallet} рублей, " + $"{dollarInWallet} долларов, " + $"{euroInWallet} евро");
+           
+            while (Console.ReadLine() == "Exit")
+            {
+                Console.WriteLine("Выход...");
+                Console.WriteLine("Программа завершена");
+            }
             
-
-
         }
     }
 }
