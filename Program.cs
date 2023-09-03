@@ -4,20 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace numberOrder
+namespace Randomsg
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int loverNumber = 5;
-            int step = 7;
-            int upperNumber = 100;
+           
+            Random rand = new Random();
 
-            for (int i = loverNumber; i<upperNumber; i+=step)
+            int minValue=0;
+            int maxValue=101;
+            int number= rand.Next(minValue,maxValue);
+            int sum = number;
+            int multiplicityOfNumbers1 = 3;
+            int multiplicityOfNumbers2 = 5;
+            Console.WriteLine(number);
+
+            for(int i = 0;i<number; i++)
             {
-                Console.WriteLine(i+" ");
+                if (i % multiplicityOfNumbers1 ==0 || i % multiplicityOfNumbers2 == 0)
+                {
+                    sum += i;
+
+                    Console.WriteLine(i+" ");
+                }
             }
+            Console.WriteLine(sum);
+
+
+
         }
     }
 }
