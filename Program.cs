@@ -11,8 +11,6 @@ namespace Randomsg
     {
         static void Main(string[] args)
         {
-           
-            
             Random random = new Random();
 
             int lowrandom = 0;
