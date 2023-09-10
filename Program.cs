@@ -13,12 +13,12 @@ namespace Randomsg
         {
             Random random = new Random();
 
-            int lowrandom = 0;
-            int highrandom = 101;
-            int number= random.Next(lowrandom,highrandom);
+            int minValue = 0;
+            int maxValue = 101;
+            int number = random.Next(minValue, maxValue);
             int divider1 = 3;
             int divider2 = 5;
-            int sum=0;
+            int sum = 0;
 
             Console.WriteLine(number);
             Console.ReadKey();
