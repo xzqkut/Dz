@@ -4,30 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp17
+namespace ConsoleApp18
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int minNumber = 1;
-            int maxNumber = 1000;
-            int result = 1;
-            int basicRate = 2;
-            int rate=0;
+            var symbol = 0;
+            var count = 0;
+            var result = 0;
 
-            Random random = new Random();
-            int number= random.Next(minNumber, maxNumber);
+            Console.WriteLine("Введите строку из символов '(' и ')'");
+            var text = Console.ReadLine();
 
-            while (result < number)
+            for (var i = 0; i < text.Length; i++)
             {
-                rate++;
-                result*=basicRate;
+                if (text[i] == '(')
+                    symbol++;
+                else if (text[i] == ')')
+                {
+                    if (i != text.Length - 1 && text[i + 1] != '(')
+                        count++;
+                    symbol--;
+                }
+                if (symbol < 0)
+                {
+                    break;
+                }
+                if (symbol == 0)
+                {
+                    result = count;
+                }
             }
-            Console.WriteLine("Случайное число: " + number);
-            Console.WriteLine("Нужная степень двойки: " + rate);
-            Console.WriteLine("Число два в найденной степени: " + result);
-
+            if (symbol == 0)
+                Console.WriteLine("Строка корректная " + text + "\n" + "Максимальная глубина равняется: " + (result + 1));
+            else Console.WriteLine("Ошибка! Не верная строка " + text);
         }
     }
 }
