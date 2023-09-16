@@ -4,35 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp15
+namespace ConsoleApp17
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string frameName = "";
+            int minNumber = 1;
+            int maxNumber = 1000;
+            int result = 1;
+            int basicRate = 2;
+            int rate=0;
 
-            Console.WriteLine("Вывести имя в прямоугольнике с символами");
-            Console.Write("Введите имя:");
-            string name = Console.ReadLine();
-            Console.WriteLine($"Имя {name}, длина имени: {name.Length}");
+            Random random = new Random();
+            int number= random.Next(minNumber, maxNumber);
 
-            Console.WriteLine("Введите символ: ");
-            string symbol= Console.ReadLine();
-            int additionToLength=4;
-            string emptySpaceForSecondLine =" ";
-            Console.WriteLine($"Cимвол: {symbol}");
-
-            Console.WriteLine("Обработка имени:");
-            for (int i = 1; i<=(name.Length + additionToLength); i+=1)
+            while (result < number)
             {
-                frameName += symbol;
+                rate++;
+                result*=basicRate;
             }
+            Console.WriteLine("Случайное число: " + number);
+            Console.WriteLine("Нужная степень двойки: " + rate);
+            Console.WriteLine("Число два в найденной степени: " + result);
 
-            string middleLine = frameName[0] + emptySpaceForSecondLine + name + emptySpaceForSecondLine + frameName[frameName.Length - 1];
-            Console.WriteLine(frameName);
-            Console.WriteLine(middleLine);
-            Console.WriteLine(frameName);
         }
     }
 }
