@@ -21,6 +21,7 @@ namespace ConsoleApp16
                 if (userInput == password)
                 {
                     Console.WriteLine("Скрытое сообщение: Хорошего вам дня!");
+                    break;
                 }
                 else
                 {
