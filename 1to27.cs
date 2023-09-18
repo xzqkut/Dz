@@ -20,6 +20,7 @@ namespace _1to27
 
             numberN = random.Next(startNumber, endNumber);
             Console.WriteLine($"Число N = {numberN}");
+            
             for (int i = 1; i < maxNumberToCheck; i += numberN)
             {
                 if (i >= minNumberToCheck)
