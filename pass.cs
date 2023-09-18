@@ -11,13 +11,16 @@ namespace ConsoleApp16
         static void Main(string[] args)
         {
             int inputAttempts = 3;
+
             string password = "drwoswir123";
-            Console.WriteLine("Введите пароль чтобы прочитать скрытое сообщение: ");
+
+            Console.WriteLine("Введите пароль чтобы прочитать скрытое сообщение. ");
 
             for (int i = 0; i < inputAttempts; i++)
             {
                 Console.WriteLine("Введите пароль: ");
                 string userInput = Console.ReadLine();
+
                 if (userInput == password)
                 {
                     Console.WriteLine("Скрытое сообщение: Хорошего вам дня!");
