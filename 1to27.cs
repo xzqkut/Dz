@@ -12,22 +12,23 @@ namespace _1to27
         {
             int startNumber = 1;
             int endNumber = 27;
-            int maxNumberToCheck = 1000;
-            int minNumberToCheck = 100;
+            int maxRange = 1000;
+            int minRange = 100;
             int numberN;
             Random random = new Random();
             int counter = 0;
 
-            numberN = random.Next(startNumber, endNumber);
+            numberN = random.Next(startNumber, endNumber+1);
             Console.WriteLine($"Число N = {numberN}");
             
-            for (int i = 1; i < maxNumberToCheck; i += numberN)
+            for (int i = 1; i < maxRange; i += numberN)
             {
-                if (i >= minNumberToCheck)
+                if (i >= minRange)
                 {
                     counter++;
                 }
             }
+
             Console.WriteLine($"Трехзначных чисел кратных N - {counter}");
         }
     }
