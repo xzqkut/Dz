@@ -13,14 +13,12 @@ namespace Massiv
             Random random = new Random();
             int minrandom = 1;
             int maxrandom = 5;
-
             int rowNumber = 2;
             int coloumnNumber = 1;
-
             int sumLine = 0;
-            int increaseColoumn = 1;
-
+            int columnGrowth = 1;
             int[,] array =  new int[2,2];
+
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
@@ -29,7 +27,7 @@ namespace Massiv
                     Console.Write(array[i,j]+" ");
                 }
                 Console.WriteLine();
-                
+          
             }
             for (int i = 0;i < array.GetLength(1); i++)
             {
@@ -37,10 +35,10 @@ namespace Massiv
             }
             for (int i = 0;i<array.GetLength(0); i++)
             {
-                increaseColoumn *= array[coloumnNumber-1,i];
+                columnGrowth *= array[coloumnNumber-1,i];
             }
             Console.WriteLine($"\nСумма чисел {rowNumber} строки: {sumLine}");
-            Console.WriteLine($"\nПроизведение чисел {coloumnNumber} столбца: {increaseColoumn}");
+            Console.WriteLine($"\nПроизведение чисел {coloumnNumber} столбца: {columnGrowth}");
             Console.ReadLine();
 
 
