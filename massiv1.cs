@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp22
+namespace massiv1
 {
     internal class Program
     {
@@ -31,8 +30,6 @@ namespace ConsoleApp22
                     if (maxNumber < array[i, j])
                     {
                         maxNumber = array[i, j];
-                        FindingNumberColumns = i;
-                        FindingNumberLine = j;
                     }
                 }
 
