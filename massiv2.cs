@@ -1,12 +1,10 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace massiv30
+namespace massiv2
 {
     internal class Program
     {
@@ -20,8 +18,8 @@ namespace massiv30
             int[] array = new int[30];
             int minValue = 1;
             int maxValue = 10;
-            int lastIndex = array.length-1;
-            int lastButNotLeast = array.lenght - 2;
+            int lastIndex = array.Length - 1;
+            int lastButNotLeast = array.Length - 2;
 
             for (int i = 0; i < array.Length; i++)
             {
@@ -35,7 +33,7 @@ namespace massiv30
                 localMaximaArray += array[0] + " ";
             }
 
-            for (int i = 1; i < array.Length - 1; i++)
+            for (int i = 1; i < lastIndex; i++)
             {
                 if (array[i] > array[i + 1] && array[i] > array[i - 1])
                 {
@@ -54,7 +52,4 @@ namespace massiv30
         }
     }
 }
-
-
-
 
