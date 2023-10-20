@@ -1,44 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp18
+namespace massiv3
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var symbol = 0;
-            var count = 0;
-            var result = 0;
+            Random random = new Random();
 
-            Console.WriteLine("Введите строку из символов '(' и ')'");
-            var text = Console.ReadLine();
+            int elementsArray = 30;
+            int[] array = new int[elementsArray];
+            int firstNumberOption = 2;
+            int secondNumberOption = 5;
+            int maximumRepetitions=0;
+            int temporaryRepeatNumber = 0;
+            int repetitionsNumber = 1;
+            int repeatNumber = 0;
 
-            for (var i = 0; i < text.Length; i++)
+            for (int i = 0; i < array.GetLength(0); i++)
             {
-                if (text[i] == '(')
-                    symbol++;
-                else if (text[i] == ')')
+                array[i] = random.Next(firstNumberOption, secondNumberOption);
+                Console.WriteLine($"{array[i]}");
+            }
+            Console.WriteLine();
+
+            for (int i = 1; i < array.Length-1; i++)
+            {
+                if (array[i] == array[i - 1])
                 {
-                    if (i != text.Length - 1 && text[i + 1] != '(')
-                        count++;
-                    symbol--;
+                    repetitionsNumber++;
+                    temporaryRepeatNumber = array[i];
+                    
                 }
-                if (symbol < 0)
+               
+                else
                 {
-                    break;
+                    repetitionsNumber = 1;
                 }
-                if (symbol == 0)
+
+                if (maximumRepetitions < repetitionsNumber)
                 {
-                    result = count;
+                    maximumRepetitions = repetitionsNumber;
+                    repeatNumber = temporaryRepeatNumber;
                 }
             }
-            if (symbol == 0)
-                Console.WriteLine("Строка корректная " + text + "\n" + "Максимальная глубина равняется: " + (result + 1));
-            else Console.WriteLine("Ошибка! Не верная строка " + text);
+
+            if (maximumRepetitions > repetitionsNumber)
+            {
+                Console.WriteLine($"Число {repeatNumber} потворяется {maximumRepetitions} раз подряд");
+            }
+
+            else
+            {
+                Console.WriteLine("Нет повторяемых подряд чисел");
+            }
         }
     }
 }
