@@ -14,7 +14,7 @@ namespace massiv3
             int[] array = new int[30];
             Random random = new Random();
             int minValue = 1;
-            int maxValue = 11;
+            int maxValue = 4;
             
             for (int i = 0; i < array.Length; i++)
             {
