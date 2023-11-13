@@ -1,115 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FightWithBoss
+namespace FightWithBoss1
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Random random = new Random();
-            int healthMage = random.Next(80, 100);
-            int healthBoss = random.Next(100, 130);
-            int damageMage = random.Next(1, 10);
-            int damageBoss = random.Next(10, 30);
-           
-            const int divineStormDamage = 50;
-            const int fireballDamage = 40;
-            const int holyRepair = 100;
-            const int sacredAreaDamage = 10;
-
-            int tickSacredArea = 3;
-
-            bool enableGame = true;
-            string spellMage;
-           
-            Console.WriteLine($"Перед вами орк-разрушитель. И он яростно бежит на вас!Не щелкайте носом, если вы произнесете заклинание неправильно, боссу будет наплевать!!!");
-            Console.WriteLine("Примените свои заклинания чтобы убить босса.Список заклинаний:" +
-                $"\n1)Священный шторм - Удар священной молнии который наносит {divineStormDamage} урона " +
-                $"\n2)Огненный шар - Огненный шар наносит {fireballDamage} урона" +
-                $"\n3)Священная земля -впускает в землю энергию света нанося урон врагам равный {sacredAreaDamage} в течении 3 секунд" +
-                $"\n4)Клятва - восстанавливает магу {holyRepair} здоровья");
-            Console.Write("\nБитва началась! ");
-
-            while (enableGame)
             {
+                const int InitialPlayerHealth = 1000;
+                const int InitialBossHealth = 3000;
+                const int ShadowSpiritDamage = 100;
+                const int HuGanZakuraDamage = 300;
+                const int InterdimensionalRiftHeal = 750;
+                const int BossAttackDamage = 100;
 
-                Console.WriteLine($"Журнал боя: \nБосс:\n здоровье:{healthBoss},\n урон:{damageBoss}.\nМаг:\n здоровье:{healthMage}, \n урон:{damageMage}");
-                Console.WriteLine("Возьмите свою магическую книгу и произнесите заклинание:");
-                spellMage = Console.ReadLine();
+                int playerHealth = InitialPlayerHealth;
+                int bossHealth = InitialBossHealth;
+                bool shadowSpiritSummoned = false;
+                bool interdimensionalRiftActive = false;
 
-                switch (spellMage)
+                const string CommandRashamon = "1";
+                const string CommandHuGanZakura = "2";
+                const string CommandInterdimensionalRift = "3";
+                const string CommandExit = "4";
+
+
+
+                Console.WriteLine("Добро пожаловать, теневой маг!");
+                Console.WriteLine("Ваше здоровье: " + playerHealth);
+                Console.WriteLine("Здоровье босса: " + bossHealth);
+
+                while (playerHealth > 0 && bossHealth > 0)
                 {
-                    //сделать константу
-                    case "Священный шторм":
-                        Console.WriteLine("Священный шторм!");
-                        if (enableGame)
-                        {
-                            healthBoss -= divineStormDamage;
-                        }
-                        break;
+                    Console.WriteLine("\nВыберите действие:");
+                    Console.WriteLine($"{CommandRashamon}. Рашамон");
+                    Console.WriteLine($"{CommandHuGanZakura}. Хуганзакура");
+                    Console.WriteLine($"{CommandInterdimensionalRift}. Межпространственный разлом");
+                    Console.WriteLine($"{CommandExit}. Сдаться и покинуть игру");
 
-                    case "Огненный шар":
-                        Console.Clear();
-                        Console.WriteLine("Огенный шар - Сгори!");
-                        if (enableGame)
-                        {
-                            healthBoss -= fireballDamage;
-                        }
-                        break;
+                    string choice = Console.ReadLine();
 
-                    case "Священная земля":
-                        Console.Clear();
-                        Console.WriteLine("Священная земля - бойся нечисть!");
-                        if (enableGame)
-                        {
-                            for (int i = 0; i < tickSacredArea; i++)
+                    switch (choice)
+                    {
+                        case CommandRashamon:
+                            if (!shadowSpiritSummoned)
                             {
-                                healthBoss -= sacredAreaDamage;
-                                Console.WriteLine($"Урон по боссу {sacredAreaDamage}");
+                                Console.WriteLine("Вы призвали теневого духа. Босс атакует вас и наносит " + BossAttackDamage + " урона.");
+                                playerHealth -= ShadowSpiritDamage;
+                                shadowSpiritSummoned = true;
                             }
-                        }
-                        break;
+                            else
+                            {
+                                Console.WriteLine("Теневой дух уже призван.");
+                            }
+                            break;
 
-                    case "Клятва":
-                        Console.Clear();
-                        Console.WriteLine("Клятва - повинуйся всевышнему!");
-                        if (healthMage <= 50)
-                        {
-                            healthMage += holyRepair;
-                            Console.WriteLine($"Ваше здоровье пополненно {healthMage}");
-                        }
-                        break;
+                        case CommandHuGanZakura:
+                            if (shadowSpiritSummoned)
+                            {
+                                Console.WriteLine("Вы использовали Хуганзакура и нанесли " + HuGanZakuraDamage + " урона боссу.");
+                                bossHealth -= HuGanZakuraDamage;
+                                shadowSpiritSummoned = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Нельзя использовать Хуганзакура без призванного теневого духа.");
+                            }
+                            break;
 
-                    case "killboss":
-                        healthBoss -= healthBoss + 10;
-                        break;
+                        case CommandInterdimensionalRift:
+                            if (!interdimensionalRiftActive)
+                            {
+                                Console.WriteLine("Вы активировали Межпространственный разлом и восстановили " + InterdimensionalRiftHeal + " хп.");
+                                playerHealth += InterdimensionalRiftHeal;
+                                interdimensionalRiftActive = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Разлом уже активен. Нельзя использовать его снова.");
+                            }
+                            break;
 
-                    default:
-                        Console.WriteLine("Вы не знаетете это заклинания или вы произнесли его не правильно.", spellMage);
-                        break;
+                        case CommandExit:
+                            Console.WriteLine("Вы решили сдаться. Босс победил.");
+                            playerHealth = 0;
+                            break;
+
+                        default:
+                            Console.WriteLine("Некорректный выбор.");
+                            break;
+                    }
+
+                    if (playerHealth <= 0)
+                    {
+                        Console.WriteLine("Вы проиграли. Босс победил.");
+                    }
+                    else if (bossHealth <= 0)
+                    {
+                        Console.WriteLine("Вы победили босса! Поздравляю!");
+                    }
+
+                    Console.WriteLine("Ваше здоровье: " + playerHealth);
+                    Console.WriteLine("Здоровье босса: " + bossHealth);
                 }
-                healthMage -= damageBoss;
-                if (healthMage <= 0 && healthBoss <= 0)
-                {
-                    Console.WriteLine("Ничья!");
-                }
-                else if (healthBoss <=0)
-                {
-                    Console.WriteLine("Босс понес поражение.Поздравляю с победой!");
-                    enableGame = false;
-                }
-                else if (healthMage <= 0)
-                {
-                    Console.WriteLine("Вы проиграли!Попробуйте еще раз.");
-                    enableGame = false;
-                }
+
+                Console.ReadLine();
             }
         }
-
     }
 }
+
+
+
