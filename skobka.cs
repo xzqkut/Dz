@@ -11,6 +11,8 @@ namespace Skobka
         static void Main(string[] args)
         {
             string input = " ";
+            char openBracket = '(';
+            char closeBracket = ')';
             input = Console.ReadLine();
 
             int depth = 0; 
@@ -18,7 +20,7 @@ namespace Skobka
 
             foreach (char symbol in input)
             {
-                if (symbol == '(')
+                if (symbol == openBracket)
                 {
                     depth++; 
                     if (depth > maxDepth)
@@ -27,7 +29,7 @@ namespace Skobka
                     }
                 }
 
-                else if (symbol == ')')
+                else if (symbol == closeBracket)
                 {
                     if (depth > 0)
                     {
@@ -35,8 +37,6 @@ namespace Skobka
                     }
                     else
                     {
-                        
-                        Console.WriteLine("Некорректное скобочное выражение");
                         return;
                     }
                 }
