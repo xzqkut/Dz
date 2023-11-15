@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skobka
+namespace ConsoleApp26
 {
     internal class Program
     {
@@ -13,31 +13,31 @@ namespace Skobka
             string input = " ";
             char openBracket = '(';
             char closeBracket = ')';
+
+            Console.Write("Введите скобочное выражение:");
             input = Console.ReadLine();
 
-            int depth = 0; 
-            int maxDepth = 0; 
+            int depth = 0;
+            int maxDepth = 0;
 
             foreach (char symbol in input)
             {
                 if (symbol == openBracket)
                 {
-                    depth++; 
+                    depth++;
+
                     if (depth > maxDepth)
                     {
                         maxDepth = depth;
                     }
                 }
-
                 else if (symbol == closeBracket)
                 {
-                    if (depth > 0)
+                    depth--;
+
+                    if (depth < 0)
                     {
-                        depth--;
-                    }
-                    else
-                    {
-                        return;
+                        break;
                     }
                 }
             }
