@@ -22,6 +22,7 @@ namespace ConsoleApp28
         {
             int choice;
             bool isOpen = true;
+
             while (isOpen)
             {
                 PrintMenu();
