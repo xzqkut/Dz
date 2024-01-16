@@ -14,7 +14,7 @@ namespace ConsoleApp29
         private const int SearchByLastNameCommand = 4;
         private const int ExitCommand = 5;
 
-        static void Main()
+        static void Main(string[] args)
         {
             string[] names = new string[0];
             string[] positions = new string[0];
@@ -31,24 +31,25 @@ namespace ConsoleApp29
                 switch (choice)
                 {
                     case AddDossierCommand:
-                        AddDossier();
+                        AddDossier(ref names,ref positions);
                         break;
 
                     case PrintDossiersCommand:
-                        PrintDossiers();
+                        PrintDossiers(names, positions);
                         break;
 
                     case DeleteDossierCommand:
-                        DeleteDossier();
+                        DeleteDossier(ref names, ref positions);
                         break;
 
                     case SearchByLastNameCommand:
-                        SearchByLastName();
+                        SearchByLastName(names, positions);
                         break;
 
                     case ExitCommand:
-                        ExitProgram();
+                        
                         isOpen = false;
+                        Console.WriteLine("Выход.");
                         break;
 
                     default:
@@ -68,19 +69,22 @@ namespace ConsoleApp29
             Console.WriteLine($"{ExitCommand}. Выход");
         }
 
-        private static void AddDossier()
+        static void AddDossier(ref string[] names,ref string[] positions)
         {
             Console.Write("Введите ФИО: ");
             string name = Console.ReadLine();
             Console.Write("Введите должность: ");
             string position = Console.ReadLine();
 
-            IncreaseArray(ref names, name);
-            IncreaseArray(ref positions, position);
+            IncreaseArray(names,name);
+            IncreaseArray( positions, position);
+            names =IncreaseArray(names,name);
+            positions=IncreaseArray(positions,position);
             Console.WriteLine("Досье успешно добавлено.");
+           
         }
 
-        private static void IncreaseArray(ref string[] array, string text)
+        private static string[] IncreaseArray( string[] array, string text)
         {
             int length = array.Length;
             string[] tempArray = new string[length + 1];
@@ -92,9 +96,10 @@ namespace ConsoleApp29
 
             tempArray[length] = text;
             array = tempArray;
+            return array;
         }
 
-        private static void PrintDossiers()
+        private static void PrintDossiers(string[] names,string [] positions)
         {
             if (names.Length == 0)
             {
@@ -109,7 +114,7 @@ namespace ConsoleApp29
             }
         }
 
-        private static void DeleteDossier()
+        private static void DeleteDossier( ref string[] names, ref string[] positions)
         {
             if (names.Length == 0)
             {
@@ -136,19 +141,20 @@ namespace ConsoleApp29
         {
             int length = array.Length;
             string[] tempArray = new string[length - 1];
-
-            for (int i = 0, j = 0; i < length; i++)
-            {
-                if (i != index)
-                {
-                    tempArray[j] = array[i];
-                    j++;
-                }
+           
+            for (int i = 0; i<index; i++)
+            { 
+                    tempArray[i] = array[i];   
             }
+            for (int i = index; i < array.Length - 1; i++)
+            {
+                tempArray[i] = array[i+1];
+            }
+            array= tempArray;
             return tempArray;
         }
 
-        private static void SearchByLastName()
+        private static void SearchByLastName(string[] names,string[] positions)
         {
             if (names.Length == 0)
             {
@@ -162,7 +168,8 @@ namespace ConsoleApp29
 
             for (int i = 0; i < names.Length; i++)
             {
-                if (names[i].ToLower().StartsWith(lastName))
+                string[] split = names[i].Split(' ');
+                if (split[0].ToLower().StartsWith(lastName))
                 {
                     Console.WriteLine($"Найдено досье: {names[i]} - {positions[i]}");
                     haveFound = true;
@@ -173,11 +180,6 @@ namespace ConsoleApp29
             {
                 Console.WriteLine($"Досье с фамилией '{lastName}' не найдено.");
             }
-        }
-
-        private static void ExitProgram()
-        {
-            Console.WriteLine("Выход из программы");
         }
     }
 }
