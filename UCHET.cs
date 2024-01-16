@@ -14,11 +14,10 @@ namespace ConsoleApp29
         private const int SearchByLastNameCommand = 4;
         private const int ExitCommand = 5;
 
-        private static string[] names = new string[0];
-        private static string[] positions = new string[0];
-
         static void Main()
         {
+            string[] names = new string[0];
+            string[] positions = new string[0];
             int choice;
             bool isOpen = true;
 
@@ -34,19 +33,24 @@ namespace ConsoleApp29
                     case AddDossierCommand:
                         AddDossier();
                         break;
+
                     case PrintDossiersCommand:
                         PrintDossiers();
                         break;
+
                     case DeleteDossierCommand:
                         DeleteDossier();
                         break;
+
                     case SearchByLastNameCommand:
                         SearchByLastName();
                         break;
+
                     case ExitCommand:
                         ExitProgram();
                         isOpen = false;
                         break;
+
                     default:
                         Console.WriteLine("Некорректный выбор. Попробуйте еще раз.");
                         break;
