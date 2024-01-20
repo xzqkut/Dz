@@ -8,14 +8,15 @@ namespace ConsoleApp29
 {
     internal class Program
     {
-        private const int AddDossierCommand = 1;
-        private const int PrintDossiersCommand = 2;
-        private const int DeleteDossierCommand = 3;
-        private const int SearchByLastNameCommand = 4;
-        private const int ExitCommand = 5;
 
         static void Main(string[] args)
         {
+            const int AddDossierCommand = 1;
+            const int PrintDossiersCommand = 2;
+            const int DeleteDossierCommand = 3;
+            const int SearchByLastNameCommand = 4;
+            const int ExitCommand = 5;
+
             string[] names = new string[0];
             string[] positions = new string[0];
             int choice;
@@ -30,24 +31,24 @@ namespace ConsoleApp29
 
                 switch (choice)
                 {
-                    case AddDossierCommand:
-                        AddDossier(ref names,ref positions);
+                    case 1:
+                        AddDossier(ref names, ref positions);
                         break;
 
-                    case PrintDossiersCommand:
+                    case 2:
                         PrintDossiers(names, positions);
                         break;
 
-                    case DeleteDossierCommand:
+                    case 3:
                         DeleteDossier(ref names, ref positions);
                         break;
 
-                    case SearchByLastNameCommand:
+                    case 4:
                         SearchByLastName(names, positions);
                         break;
 
-                    case ExitCommand:
-                        
+                    case 5:
+
                         isOpen = false;
                         Console.WriteLine("Выход.");
                         break;
@@ -62,29 +63,29 @@ namespace ConsoleApp29
         private static void PrintMenu()
         {
             Console.WriteLine("Меню:");
-            Console.WriteLine($"{AddDossierCommand}. Добавить досье");
-            Console.WriteLine($"{PrintDossiersCommand}. Вывести все досье");
-            Console.WriteLine($"{DeleteDossierCommand}. Удалить досье");
-            Console.WriteLine($"{SearchByLastNameCommand}. Поиск по фамилии");
-            Console.WriteLine($"{ExitCommand}. Выход");
+            Console.WriteLine($"{1}. Добавить досье");
+            Console.WriteLine($"{2}. Вывести все досье");
+            Console.WriteLine($"{3}. Удалить досье");
+            Console.WriteLine($"{4}. Поиск по фамилии");
+            Console.WriteLine($"{5}. Выход");
         }
 
-        static void AddDossier(ref string[] names,ref string[] positions)
+        static void AddDossier(ref string[] names, ref string[] positions)
         {
             Console.Write("Введите ФИО: ");
             string name = Console.ReadLine();
+
             Console.Write("Введите должность: ");
             string position = Console.ReadLine();
 
-            IncreaseArray(names,name);
-            IncreaseArray( positions, position);
-            names =IncreaseArray(names,name);
-            positions=IncreaseArray(positions,position);
+            names = IncreaseArray(names, name);
+            positions = IncreaseArray(positions, position);
+
             Console.WriteLine("Досье успешно добавлено.");
-           
+
         }
 
-        private static string[] IncreaseArray( string[] array, string text)
+        private static string[] IncreaseArray(string[] array, string text)
         {
             int length = array.Length;
             string[] tempArray = new string[length + 1];
@@ -99,7 +100,7 @@ namespace ConsoleApp29
             return array;
         }
 
-        private static void PrintDossiers(string[] names,string [] positions)
+        private static void PrintDossiers(string[] names, string[] positions)
         {
             if (names.Length == 0)
             {
@@ -114,7 +115,7 @@ namespace ConsoleApp29
             }
         }
 
-        private static void DeleteDossier( ref string[] names, ref string[] positions)
+        private static void DeleteDossier(ref string[] names, ref string[] positions)
         {
             if (names.Length == 0)
             {
@@ -141,20 +142,19 @@ namespace ConsoleApp29
         {
             int length = array.Length;
             string[] tempArray = new string[length - 1];
-           
-            for (int i = 0; i<index; i++)
-            { 
-                    tempArray[i] = array[i];   
+
+            for (int i = 0; i < index; i++)
+            {
+                tempArray[i] = array[i];
             }
             for (int i = index; i < array.Length - 1; i++)
             {
-                tempArray[i] = array[i+1];
+                tempArray[i] = array[i + 1];
             }
-            array= tempArray;
             return tempArray;
         }
 
-        private static void SearchByLastName(string[] names,string[] positions)
+        private static void SearchByLastName(string[] names, string[] positions)
         {
             if (names.Length == 0)
             {
@@ -164,6 +164,7 @@ namespace ConsoleApp29
 
             Console.Write("Введите фамилию для поиска: ");
             string lastName = Console.ReadLine().ToLower();
+
             bool haveFound = false;
 
             for (int i = 0; i < names.Length; i++)
