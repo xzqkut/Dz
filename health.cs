@@ -10,7 +10,10 @@ namespace health
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Введите процент здоровья (от 0 до 100): ");
+            int minimumSamplePercent = 0;
+            int maximumSamplePercent = 100;
+
+            Console.WriteLine($"Введите процент здоровья (от {minimumSamplePercent} до {maximumSamplePercent}): ");
 
             if (int.TryParse(Console.ReadLine(), out int percentHealth))
             {
@@ -28,11 +31,11 @@ namespace health
         }
         static void DrawBar(int percent, string symbol, string name, int maxValue)
         {
-            int isDivisor = 100;
-            int value = maxValue * percent / isDivisor;
+            int selectedDivisor = 100;
+            int value = maxValue * percent / selectedDivisor;
             string quantitySymbols = GenerateSymbolString(symbol, value);
 
-            if (percent >= 0 && percent <= isDivisor)
+            if (percent >= 0 && percent <= selectedDivisor)
             {
                 Console.Write($"{name} [{quantitySymbols}");
 
