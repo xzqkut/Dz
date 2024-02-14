@@ -25,7 +25,7 @@ namespace health
             }
             else
             {
-                Console.WriteLine("Некорректный ввод. Пожалуйста, введите число от 0 до 100.");
+                Console.WriteLine($"Некорректный ввод. Пожалуйста, введите число от {minimumSamplePercent} до {maximumSamplePercent}.");
             }
 
         }
