@@ -13,8 +13,10 @@ namespace mapbrodilka
         {
             Console.CursorVisible = false;
 
-            int gamePosX = 11;
-            int gamePosY = 11;
+            
+
+            int gamePositionX = 11;
+            int gamePositionY = 11;
             bool isPlaying = true;
             char wallSymbol = '#';
             char emptySymbol = ' ';
@@ -43,11 +45,11 @@ namespace mapbrodilka
             int totalDots = CountDots(map,dotSymbol);
 
             DrawMap(map);
-            DrawPlayer(positionPlayerX, positionPlayerY);
+            DrawPlayer(positionPlayerX, positionPlayerY,playerSymbol);
 
             while (isPlaying)
             {
-                Console.SetCursorPosition(gamePosX, gamePosY);
+                Console.SetCursorPosition(gamePositionX, gamePositionY);
                 Console.WriteLine($"Cчет{totalDots}");
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
@@ -57,7 +59,7 @@ namespace mapbrodilka
                 {
                     if (map[positionPlayerX + directionX, positionPlayerY + directionY] != wallSymbol)
                     {
-                        MovePlayer(ref positionPlayerX, ref positionPlayerY, directionX, directionY, map, ref totalDots,dotSymbol,emptySymbol);
+                        MovePlayer(ref positionPlayerX, ref positionPlayerY, directionX, directionY, map, ref totalDots,dotSymbol,emptySymbol,playerSymbol);
                     }
                 }
 
@@ -88,22 +90,22 @@ namespace mapbrodilka
             }
         }
 
-        static void DrawPlayer(int positionPlayerX, int positionPlayerY)
+        static void DrawPlayer(int positionPlayerX, int positionPlayerY,char playerSymbol)
         {
             Console.SetCursorPosition(positionPlayerY, positionPlayerX);
-            Console.Write('@');
+            Console.Write(playerSymbol);
         }
 
-        static void MovePlayer(ref int positionPlayerX, ref int positionPlayerY, int directionX, int directionY, char[,] map, ref int totalDots, char dotSymbol, char emptySymbol)
+        static void MovePlayer(ref int positionPlayerX, ref int positionPlayerY, int directionX, int directionY, char[,] map, ref int totalDots, char dotSymbol, char emptySymbol,char playerSymbol)
         {
             Console.SetCursorPosition(positionPlayerY, positionPlayerX);
-            Console.Write(' ');
+            Console.Write(emptySymbol);
 
             positionPlayerX += directionX;
             positionPlayerY += directionY;
 
             Console.SetCursorPosition(positionPlayerY, positionPlayerX);
-            Console.Write('@');
+            Console.Write(playerSymbol);
 
             if (map[positionPlayerX, positionPlayerY] == dotSymbol)
             {
@@ -114,27 +116,33 @@ namespace mapbrodilka
 
         static void GetDirection(ConsoleKeyInfo key, out int directionX, out int directionY)
         {
+            const ConsoleKey MoveUpKey = ConsoleKey.UpArrow;
+            const ConsoleKey MoveDownKey = ConsoleKey.DownArrow;
+            const ConsoleKey MoveLeftKey = ConsoleKey.LeftArrow;
+            const ConsoleKey MoveRightKey = ConsoleKey.RightArrow;
+            
             directionY = 0;
             directionX = 0;
 
             switch (key.Key)
             {
-                case ConsoleKey.UpArrow:
+                case MoveUpKey:
                     directionX = -1;
                     break;
 
-                case ConsoleKey.DownArrow:
+                case MoveDownKey:
                     directionX = 1;
                     break;
 
-                case ConsoleKey.LeftArrow:
+                case MoveLeftKey:
                     directionY = -1;
                     break;
 
-                case ConsoleKey.RightArrow:
+                case MoveRightKey:
                     directionY = 1;
                     break;
             }
+            
         }
 
         static int CountDots(char[,] map,char dotSymbol)
