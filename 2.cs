@@ -6,13 +6,13 @@
         bool isShuffling = true;
         string mixRow = "Да";
         string closedRow = "Нет";
-        string emptySymbol = " ";
+       
 
         Console.WriteLine("Исходный массив:");
 
-        PrintArray(seriesOfNumbers,emptySymbol);
+        PrintArray(seriesOfNumbers);
 
-        ShuffleArray(seriesOfNumbers, emptySymbol);
+        ShuffleArray(seriesOfNumbers);
 
         while (isShuffling)
         {
@@ -37,7 +37,7 @@
         Console.WriteLine("Программа прекращена.");
     }
 
-    static void ShuffleArray(int[] array, string emptySymbol)
+    static void ShuffleArray(int[] array)
     {
         Random random = new Random();
 
@@ -50,12 +50,13 @@
         }     
     }
 
-    static void PrintArray(int[] array,string emptySymbol)
+    static void PrintArray(int[] array)
     {
         foreach (var item in array)
         {
-            Console.Write(item + emptySymbol) ;
+            Console.Write(item + " ") ;
         }
+
         Console.WriteLine();
     }
 }
