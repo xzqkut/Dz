@@ -2,35 +2,35 @@
 {
     static void Main(string[] args)
     {
-        int[] array = { 1, 2, 3, 4, 5, 6, 7 };
+        int[] trackNumber = { 1, 2, 3, 4, 5, 6, 7 };
         bool isShuffling = true;
-        string responsYes = "Да";
-        string responsNo = "Нет";
+        string shuffleRow = "Да";
+        string notShuffleRow = "Нет";
         string emptySymbol = " ";
 
         Console.WriteLine("Исходный массив:");
 
-        PrintArray(array,emptySymbol);
+        PrintArray(trackNumber,emptySymbol);
 
-        ShuffleArray(array, emptySymbol);
+        ShuffleArray(trackNumber, emptySymbol);
 
         while (isShuffling)
         {
-            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({responsYes}/ {responsNo})");
+            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({shuffleRow}/ {notShuffleRow})");
             string response = Console.ReadLine();
 
-            if (response == responsYes)
+            if (response == shuffleRow)
             {
-                PrintArray(array, emptySymbol);
-                ShuffleArray(array,emptySymbol);
+                PrintArray(trackNumber, emptySymbol);
+                ShuffleArray(trackNumber,emptySymbol);
             }
-            else if (response == responsNo)
+            else if (response == notShuffleRow)
             {
                 isShuffling = false;
             }
             else
             {
-                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {responsYes} или {responsNo}.");
+                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {shuffleRow} или {notShuffleRow}.");
             }
         }
 
@@ -49,8 +49,8 @@
             array[randomIndex] = temp;
         }
 
-        Console.WriteLine("\n Перетасованный массив:");
-            PrintArray(array,emptySymbol);
+        
+            
     }
 
     static void PrintArray(int[] array,string emptySymbol)
