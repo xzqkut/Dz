@@ -2,7 +2,7 @@
 {
     static void Main(string[] args)
     {
-        int[] trackNumber = { 1, 2, 3, 4, 5, 6, 7 };
+        int[] seriesOfNumbers = { 1, 2, 3, 4, 5, 6, 7 };
         bool isShuffling = true;
         string mixRow = "Да";
         string closedRow = "Нет";
@@ -10,9 +10,9 @@
 
         Console.WriteLine("Исходный массив:");
 
-        PrintArray(trackNumber,emptySymbol);
+        PrintArray(seriesOfNumbers,emptySymbol);
 
-        ShuffleArray(trackNumber, emptySymbol);
+        ShuffleArray(seriesOfNumbers, emptySymbol);
 
         while (isShuffling)
         {
@@ -21,8 +21,8 @@
 
             if (response == mixRow)
             {
-                PrintArray(trackNumber, emptySymbol);
-                ShuffleArray(trackNumber,emptySymbol);
+                PrintArray(seriesOfNumbers, emptySymbol);
+                ShuffleArray(seriesOfNumbers,emptySymbol);
             }
             else if (response == closedRow)
             {
@@ -47,10 +47,7 @@
             int temp = array[i];
             array[i] = array[randomIndex];
             array[randomIndex] = temp;
-        }
-
-        
-            
+        }     
     }
 
     static void PrintArray(int[] array,string emptySymbol)
