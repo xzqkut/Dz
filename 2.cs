@@ -4,10 +4,9 @@
     {
         int[] seriesOfNumbers = { 1, 2, 3, 4, 5, 6, 7 };
         bool isShuffling = true;
-        string mixRow = "Да";
-        string closedRow = "Нет";
+        string positiveUserResponse = "Да";
+        string negativeUserResponse = "Нет";
        
-
         Console.WriteLine("Исходный массив:");
 
         PrintArray(seriesOfNumbers);
@@ -16,21 +15,21 @@
 
         while (isShuffling)
         {
-            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({mixRow}/ {closedRow})");
+            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({positiveUserResponse}/ {negativeUserResponse})");
             string response = Console.ReadLine();
 
-            if (response == mixRow)
+            if (response == positiveUserResponse)
             {
-                PrintArray(seriesOfNumbers, emptySymbol);
-                ShuffleArray(seriesOfNumbers,emptySymbol);
+                PrintArray(seriesOfNumbers);
+                ShuffleArray(seriesOfNumbers);
             }
-            else if (response == closedRow)
+            else if (response == negativeUserResponse)
             {
                 isShuffling = false;
             }
             else
             {
-                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {mixRow} или {closedRow}.");
+                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {positiveUserResponse} или {negativeUserResponse}.");
             }
         }
 
