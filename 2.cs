@@ -4,8 +4,8 @@
     {
         int[] trackNumber = { 1, 2, 3, 4, 5, 6, 7 };
         bool isShuffling = true;
-        string shuffleRow = "Да";
-        string notShuffleRow = "Нет";
+        string mixRow = "Да";
+        string closedRow = "Нет";
         string emptySymbol = " ";
 
         Console.WriteLine("Исходный массив:");
@@ -16,21 +16,21 @@
 
         while (isShuffling)
         {
-            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({shuffleRow}/ {notShuffleRow})");
+            Console.WriteLine($"\nХотите еще раз перетасовать массив? ({mixRow}/ {closedRow})");
             string response = Console.ReadLine();
 
-            if (response == shuffleRow)
+            if (response == mixRow)
             {
                 PrintArray(trackNumber, emptySymbol);
                 ShuffleArray(trackNumber,emptySymbol);
             }
-            else if (response == notShuffleRow)
+            else if (response == closedRow)
             {
                 isShuffling = false;
             }
             else
             {
-                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {shuffleRow} или {notShuffleRow}.");
+                Console.WriteLine($"Неверный ответ. Пожалуйста, введите {mixRow} или {closedRow}.");
             }
         }
 
