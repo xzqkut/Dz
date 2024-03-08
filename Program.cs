@@ -1,64 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace massiv3
+namespace ConsoleApp4
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Random random = new Random();
+            Queue<int> clients = GetClients();
+            int cash = 0;
+            int numberClients = 1;
+            bool isOpen = true;
 
-            int elementsArray = 30;
-            int[] array = new int[elementsArray];
-            int firstNumberOption = 2;
-            int secondNumberOption = 5;
-            int maximumRepetitions=0;
-            int temporaryRepeatNumber = 0;
-            int repetitionsNumber = 1;
-            int repeatNumber = 0;
-
-            for (int i = 0; i < array.GetLength(0); i++)
+            while (isOpen)
             {
-                array[i] = random.Next(firstNumberOption, secondNumberOption);
-                Console.WriteLine($"{array[i]}");
-            }
-            Console.WriteLine();
 
-            for (int i = 1; i < array.Length-1; i++)
-            {
-                if (array[i] == array[i - 1])
-                {
-                    repetitionsNumber++;
-                    temporaryRepeatNumber = array[i];
-                    
-                }
-               
-                else
-                {
-                    repetitionsNumber = 1;
-                }
+                int money = clients.Dequeue();
+                cash += money;
 
-                if (maximumRepetitions < repetitionsNumber)
-                {
-                    maximumRepetitions = repetitionsNumber;
-                    repeatNumber = temporaryRepeatNumber;
-                }
-            }
-
-            if (maximumRepetitions > repetitionsNumber)
-            {
-                Console.WriteLine($"Число {repeatNumber} потворяется {maximumRepetitions} раз подряд");
-            }
-
-            else
-            {
-                Console.WriteLine("Нет повторяемых подряд чисел");
+                Console.WriteLine($"{numberClients++} клиент сделал покупки на сумму {money} рублей.");
+                Console.WriteLine($"В кассе - {cash} рублей.");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
+
+        static Queue<int> GetClients()
+        {
+            Queue<int> clients = new Queue<int>();
+            Random rand = new Random();
+            int maxValue = 2000;
+
+            Console.WriteLine("Введите количество клиентов в очереди: ");
+            string userInput = Console.ReadLine();
+
+            if (int.TryParse(userInput, out int number))
+            {
+                for (int i = 0; i < number; i++)
+                {
+                    clients.Enqueue(rand.Next(maxValue));
+                }
+            }
+            return clients;
+        }
+
     }
 }
