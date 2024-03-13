@@ -4,159 +4,109 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp28
+namespace UchetKadrov
 {
     internal class Program
     {
-
-        private const int AddDossierCommand = 1;
-        private const int PrintDossiersCommand = 2;
-        private const int DeleteDossierCommand = 3;
-        private const int SearchByLastNameCommand = 4;
-        private const int ExitCommand = 5;
-
-        private static string[] names = new string[0];
-        private static string[] positions = new string[0];
-
-        static void Main()
+        static void Main(string[] args)
         {
-            int choice;
+            const string CommandAddDosier = "1";
+            const string CommandShowDosier = "2";
+            const string CommandRemoveDosier = "3";
+            const string CommandExit = "4";
+
+            List<string> employeeDetails = new List<string>();
+            List<string> positions = new List<string>();
+            string userInput;
             bool isOpen = true;
 
             while (isOpen)
             {
-                PrintMenu();
+                Console.WriteLine($"{CommandAddDosier}- добавить досье\n{CommandShowDosier}-показать досье\n{CommandRemoveDosier}-удалить досье\n{CommandExit}-Выход");
 
-                Console.Write("Выберите действие (1-5): ");
-                choice = int.Parse(Console.ReadLine());
+                userInput = Console.ReadLine();
 
-                switch (choice)
+                switch (userInput)
                 {
-                    case AddDossierCommand:
-                        AddDossier();
+                    case CommandAddDosier:
+                        AddDossier(employeeDetails, positions);
                         break;
-                    case PrintDossiersCommand:
-                        PrintDossiers();
+
+                    case CommandRemoveDosier:
+                        RemoveDossier(employeeDetails, positions);
                         break;
-                    case DeleteDossierCommand:
-                        DeleteDossier();
+
+                    case CommandShowDosier:
+                        ShowDossiers(employeeDetails, positions);
                         break;
-                    case SearchByLastNameCommand:
-                        SearchByLastName();
+
+                    case CommandExit:
+                        isOpen = false;
                         break;
-                    case ExitCommand:
-                        ExitProgram();
-                        return;
+
                     default:
-                        Console.WriteLine("Некорректный выбор. Попробуйте еще раз.");
+                        Console.WriteLine("Неверный ввод");
                         break;
+
                 }
             }
         }
 
-        private static void PrintMenu()
+        static void AddDossier(List<string> employeeDetails, List<string> positions)
         {
-            Console.WriteLine("Меню:");
-            Console.WriteLine($"{AddDossierCommand}. Добавить досье");
-            Console.WriteLine($"{PrintDossiersCommand}. Вывести все досье");
-            Console.WriteLine($"{DeleteDossierCommand}. Удалить досье");
-            Console.WriteLine($"{SearchByLastNameCommand}. Поиск по фамилии");
-            Console.WriteLine($"{ExitCommand}. Выход");
-        }
+            char symbol = ' ';
 
-        private static void AddDossier()
-        {
-            Console.Write("Введите ФИО: ");
+            Console.WriteLine("Введите фамилию: ");
+            string surname = Console.ReadLine();
+
+            Console.WriteLine("Введите имя: ");
             string name = Console.ReadLine();
-            Console.Write("Введите должность: ");
+
+            Console.WriteLine("Введите отчество: ");
+            string patronymic = Console.ReadLine();
+
+            Console.WriteLine("Введите должность: ");
             string position = Console.ReadLine();
 
-            Array.Resize(ref names, names.Length + 1);
-            Array.Resize(ref positions, positions.Length + 1);
+            string entireData = surname + symbol + name + symbol + patronymic;
 
-            names[names.Length - 1] = name;
-            positions[positions.Length - 1] = position;
+            employeeDetails.Add(entireData);
+            positions.Add(position);
 
-            Console.WriteLine("Досье успешно добавлено.");
         }
 
-        private static void PrintDossiers()
+        static void RemoveDossier(List<string> positions, List<string> employeeDetails)
         {
-            if (names.Length == 0)
+            if (positions.Count > 0)
             {
-                Console.WriteLine("Досье пусто.");
-                return;
-            }
+                Console.WriteLine("Введите индекс сотрудника для удаления:");
+                string userInput = Console.ReadLine();
 
-            Console.WriteLine("Все досье:");
-            for (int i = 0; i < names.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {names[i]} - {positions[i]}");
-            }
-        }
-
-        private static void DeleteDossier()
-        {
-            if (names.Length == 0)
-            {
-                Console.WriteLine("Досье пусто. Удаление невозможно.");
-                return;
-            }
-
-            Console.Write("Введите порядковый номер досье для удаления: ");
-            int index = int.Parse(Console.ReadLine()) - 1;
-
-            if (index < 0 || index >= names.Length)
-            {
-                Console.WriteLine("Некорректный номер досье.");
-                return;
-            }
-
-            for (int i = index; i < names.Length - 1; i++)
-            {
-                names[i] = names[i + 1];
-                positions[i] = positions[i + 1];
-            }
-
-            Array.Resize(ref names, names.Length - 1);
-            Array.Resize(ref positions, positions.Length - 1);
-
-            Console.WriteLine("Досье успешно удалено.");
-        }
-
-        private static void SearchByLastName()
-        {
-            if (names.Length == 0)
-            {
-                Console.WriteLine("Досье пусто.");
-                return;
-            }
-
-            Console.Write("Введите фамилию для поиска: ");
-            string lastName = Console.ReadLine().ToLower();
-            bool haveFound = false;
-
-            for (int i = 0; i < names.Length; i++)
-            {
-                if (names[i].ToLower().StartsWith(lastName))
+                if (int.TryParse(userInput, out int id))
                 {
-                    Console.WriteLine($"Найдено досье: {names[i]} - {positions[i]}");
-                    haveFound = true;
+                    if (id >= 0 && id < employeeDetails.Count)
+                    {
+                        employeeDetails.RemoveAt(id);
+                        positions.RemoveAt(id);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверный индекс.");
+                    }
                 }
             }
-
-            if (haveFound==false)
-            {
-                Console.WriteLine($"Досье с фамилией '{lastName}' не найдено.");
-            }
         }
 
-        private static void ExitProgram()
+        static void ShowDossiers(List<string> employeeDetails, List<string> positions)
         {
-            Console.WriteLine("Выход из программы.");
-           
+            if (employeeDetails.Count > 0)
+            {
+                for (int i = 0; i < employeeDetails.Count; i++)
+                {
+                    Console.Write($"{i}) Фио - {employeeDetails[i]}, должность {positions[i]}");
+                    Console.WriteLine();
+                }
+            }
         }
     }
 }
-    
-
