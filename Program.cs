@@ -4,48 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace XYd
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Queue<int> clients = GetClients();
-            int cash = 0;
-            int numberClients = 1;
-            bool isOpen = true;
+            Render render = new Render();
+            Player player = new Player(19, 5, '|');
 
-            while (isOpen)
-            {
-
-                int money = clients.Dequeue();
-                cash += money;
-
-                Console.WriteLine($"{numberClients++} клиент сделал покупки на сумму {money} рублей.");
-                Console.WriteLine($"В кассе - {cash} рублей.");
-                Console.ReadKey();
-                Console.Clear();
-            }
+            render.Draw(player.PositionX, player.PositionY,player.Symbol);
         }
+    }
 
-        static Queue<int> GetClients()
+    class Player
+    {
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
+        public char Symbol { get; private set; }
+
+        public Player(int positionX,int positionY,char symbol)
         {
-            Queue<int> clients = new Queue<int>();
-            Random rand = new Random();
-            int maxValue = 2000;
-
-            Console.WriteLine("Введите количество клиентов в очереди: ");
-            string userInput = Console.ReadLine();
-
-            if (int.TryParse(userInput, out int number))
-            {
-                for (int i = 0; i < number; i++)
-                {
-                    clients.Enqueue(rand.Next(maxValue));
-                }
-            }
-            return clients;
+            PositionX = positionX;
+            PositionY = positionY;
+            Symbol = symbol;
         }
+    }
 
+    class Render
+    {
+        public void Draw(int positionX,int positionY,char symbol)
+        {
+            Console.SetCursorPosition(positionX,positionY);
+            Console.WriteLine(symbol);
+        }
+        
     }
 }
