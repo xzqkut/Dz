@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace XYd
 {
@@ -11,9 +8,9 @@ namespace XYd
         static void Main(string[] args)
         {
             Render render = new Render();
-            Player player = new Player(19, 5, '|');
+            Player player = new Player(19, 5, '@');
 
-            render.Draw(player.PositionX, player.PositionY,player.Symbol);
+            render.Draw(player);
         }
     }
 
@@ -33,11 +30,10 @@ namespace XYd
 
     class Render
     {
-        public void Draw(int positionX,int positionY,char symbol)
+        public void Draw(Player player)
         {
-            Console.SetCursorPosition(positionX,positionY);
-            Console.WriteLine(symbol);
+            Console.SetCursorPosition(player.PositionX,player.PositionY);
+            Console.WriteLine(player.Symbol);
         }
-        
     }
 }
