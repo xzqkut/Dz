@@ -1,64 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace massiv3
+namespace ConsoleApp4
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            int[] array = new int[30];
+            int arraySize = 30;
+            int minRandomValue = 1;
+            int maxRandomValue = 6;
+            int[] numbers = new int[arraySize];
+
             Random random = new Random();
-            int minValue = 1;
-            int maxValue = 4;
-            
-            for (int i = 0; i < array.Length; i++)
+
+            for (int i = 0; i < numbers.Length; i++)
             {
-                array[i] = random.Next(minValue, maxValue);
+                numbers[i] = random.Next(minRandomValue, maxRandomValue);
             }
 
-            int currentNumber = array[0];
-            int currentCount = 1;
-            int maxNumber = array[0];
-            int maxCount = 1;
+            Console.WriteLine("\nСгенерированный массив:");
+            Console.WriteLine(string.Join(" ", numbers));
 
-            for (int i = 1; i < array.Length; i++)
+            if (numbers.Length == 0)
             {
-                if (array[i] == array[i - 1])
+                Console.WriteLine("Массив пустой");
+                return;
+            }
+
+            int mostFrequentNumber = numbers[0];
+            int mostFrequentCount = 0;
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                int count = 0;
+
+                for (int j = 0; j < numbers.Length; j++)
                 {
-                    currentCount++;
-                }
-                else
-                {
-                    currentCount = 1;
-                    currentNumber = array[i];
+                    if (numbers[j] == numbers[i])
+                    {
+                        count++;
+                    }
                 }
 
-                if (currentCount > maxCount)
+                if (count > mostFrequentCount)
                 {
-                    maxCount = currentCount;
-                    maxNumber = currentNumber;
+                    mostFrequentCount = count;
+                    mostFrequentNumber = numbers[i];
                 }
             }
 
-            Console.WriteLine("Сгенерированный массив:");
-            foreach (int num in array)
-            {
-                Console.Write(num + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine("Самый длинный подмассив:");
-            for (int i = 0; i < maxCount; i++)
-            {
-                Console.Write(maxNumber + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine("Число, которое самое больше раз повторяется подряд: " + maxNumber);
-            Console.WriteLine("Количество повторений: " + maxCount);
+            Console.WriteLine($"\nЧисло, встречающееся чаще всего: {mostFrequentNumber}, Количество вхождений: {mostFrequentCount}");
         }
     }
 }
+
+
