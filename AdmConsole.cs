@@ -11,46 +11,32 @@ namespace ConsoleApp11
         static void Main(string[] args)
         {
             Database database = new Database();
-       
+
             bool isOpen = true;
+
             while (isOpen)
             {
-                Console.WriteLine("Здравствуйте администратор, что вы хотите сделать?");
-                Console.WriteLine("1 - Добавить игрока");
-                Console.WriteLine("2 - Забанить игрока");
-                Console.WriteLine("3 - Разбанить игрока");
-                Console.WriteLine("4 - Показать всех игроков");
-                Console.WriteLine("5 - Показать забаненных игроков");
-                Console.WriteLine("0 - Выход");
+                ShowMenu();
 
                 string input = Console.ReadLine();
                 switch (input)
                 {
-                    case "1":
-                        Console.WriteLine("Присвойте ID игроку");
-                        int id = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Назначьте игроку имя");
-                        string name = Console.ReadLine();
-                        Console.WriteLine("С каким уровнев появится его персонаж?");
-                        int levelUser = Convert.ToInt32(Console.ReadLine());
-
-                        database.AddPlayer(new Player(id, name, levelUser, false));
-                        Console.WriteLine("Игрок создан!");
+                    case MenuCommands.AddPlayer:
+                        AddNewPlayer(database);
                         break;
-                    case "2":
-
-                        database.BannedPlaye();
+                    case MenuCommands.BanPlayer:
+                        database.BanPlayer();
                         break;
-                    case "3":
-                        database.UnBan();
+                    case MenuCommands.UnbanPlayer:
+                        database.Unban();
                         break;
-                    case "4":
-                        database.ShowAllPlayer();
+                    case MenuCommands.ShowAll:
+                        database.ShowAllPlayers();
                         break;
-                    case "5":
+                    case MenuCommands.ShowBanned:
                         database.ShowAllBannedPlayers();
                         break;
-                    case "6":
+                    case MenuCommands.Exit:
                         isOpen = false;
                         break;
 
@@ -61,83 +47,121 @@ namespace ConsoleApp11
             }
         }
 
-        class Player
+        static void ShowMenu()
         {
-            public int Id;
-            public string Nickname;
-            public int Level;
-            public bool isBanned;
+            Console.WriteLine("\nЗдравствуйте администратор, что вы хотите сделать?");
+            Console.WriteLine("1 - Добавить игрока");
+            Console.WriteLine("2 - Забанить игрока");
+            Console.WriteLine("3 - Разбанить игрока");
+            Console.WriteLine("4 - Показать всех игроков");
+            Console.WriteLine("5 - Показать забаненных игроков");
+            Console.WriteLine("0 - Выход");
+        }
 
-            public Player(int idNumber, string nickName, int userLevel, bool ban)
+        static void AddNewPlayer(Database database)
+        {
+            Console.Write("Присвойте ID игроку: ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Назначьте игроку имя: ");
+            string name = Console.ReadLine();
+            Console.Write("С каким уровнем появится его персонаж?: ");
+            int level = Convert.ToInt32(Console.ReadLine());
+
+            database.AddPlayer(new Player(id, name, level, false));
+            Console.WriteLine("Игрок создан!");
+        }
+    }
+
+    public static class MenuCommands
+    {
+        public const string AddPlayer = "1";
+        public const string BanPlayer = "2";
+        public const string UnbanPlayer = "3";
+        public const string ShowAll = "4";
+        public const string ShowBanned = "5";
+        public const string Exit = "0";
+    }
+
+    class Player
+    {
+        public int Id { get; set; }
+        public string Nickname { get; set; }
+        public int Level { get; set; }
+        public bool isBanned { get; set; }
+
+        public Player(int idNumber, string nickName, int userLevel, bool ban)
+        {
+            Id = idNumber;
+            Nickname = nickName;
+            Level = userLevel;
+            isBanned = ban;
+        }
+    }
+
+    class Database
+    {
+        private List<Player> _players = new List<Player>();
+
+        public void AddPlayer(Player player)
+        {
+            _players.Add(player);
+        }
+
+        public void ShowAllPlayers()
+        {
+            foreach (Player player in _players)
             {
-                Id = idNumber;
-                Nickname = nickName;
-                Level = userLevel;
-                isBanned = ban;
+                Console.WriteLine($"Игроки:{player.Nickname},ID:{player.Id}");
             }
         }
 
-        class Database
+        public void ShowAllBannedPlayers()
         {
-            private List<Player> _list = new List<Player>();
+            Console.WriteLine("Список игроков в бане:");
 
-            public void AddPlayer(Player player)
+            foreach (Player player in _players)
             {
-                _list.Add(player);
-            }
-
-            public void ShowAllPlayer()
-            {
-                foreach (Player player in _list)
+                if (player.isBanned)
                 {
-                    Console.WriteLine($"Игроки:{player.Nickname},ID:{player.Id}");
-                }
-
-            }
-
-            public void ShowAllBannedPlayers()
-            {
-                Console.WriteLine("Список игроков в бане:");
-
-                foreach (Player player in _list)
-                {
-                    if (player.isBanned)
-                    {
-                        Console.WriteLine($"Ник:{player.Nickname},ID Игрока:{player.Id}");
-                    }
+                    Console.WriteLine($"Ник:{player.Nickname},ID Игрока:{player.Id}");
                 }
             }
+        }
 
-            public void BannedPlaye()
+        public void BanPlayer()
+        {
+            Console.WriteLine("Введите ID игрока которого следует забанить.");
+            int id = Convert.ToInt32(Console.ReadLine());
+            bool found = false;
+
+            foreach (Player player in _players)
             {
-                Console.WriteLine("Введите ID игрока которого следует забанить.");
-                int id = Convert.ToInt32(Console.ReadLine());
-                bool found = false;
-
-                foreach (Player player in _list)
+                if (player.Id == id)
                 {
-                    if (player.Id == id)
-                    {
-                        player.isBanned = true;
-                        Console.WriteLine($"Игрок {player.Nickname} забанен!");
-                        found = true;
-                        break;
-                    }
-                    if (!found)
-                    {
-                        Console.WriteLine("Игрок не найден");
-                    }
+                    player.isBanned = true;
+                    Console.WriteLine($"Игрок {player.Nickname} забанен!");
+                    found = true;
+                    break;
                 }
             }
 
-            public void UnBan()
+            if (found == false)
             {
-                Console.WriteLine("Введите ID игрока которого следует разбанить.");
+                Console.WriteLine("Игрок не найден");
+            }
+        }
 
-                int id = Convert.ToInt32(Console.ReadLine());
-                bool found = false;
+        public void Unban()
+        {
+            Console.WriteLine("Введите ID игрока которого следует разбанить.");
 
-                foreach (Player player in _list)
+            string input = Console.ReadLine();
+            int id;
+            bool found = false;
+
+            if (int.TryParse(input, out id))
+            {
+                foreach (Player player in _players)
                 {
                     if (player.Id == id)
                     {
@@ -146,12 +170,13 @@ namespace ConsoleApp11
                         found = true;
                         break;
                     }
-                    if (!found)
-                    {
-                        Console.WriteLine("Игрок не найден");
-                    }
+                }
+                if (found == false)
+                {
+                    Console.WriteLine("Игрок не найден");
                 }
             }
         }
     }
 }
+
