@@ -7,7 +7,6 @@ namespace ConsoleApp11
     {
         static void Main(string[] args)
         {
-
             Database database = new Database();
             GameManager manager = new GameManager(database);
             manager.Run();
