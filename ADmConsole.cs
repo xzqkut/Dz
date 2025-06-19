@@ -95,7 +95,7 @@ namespace ConsoleApp11
             string idInput = Console.ReadLine();
             int id;
 
-            if (int.TryParse(idInput, out id)==false)
+            if (int.TryParse(idInput, out id) == false)
             {
                 Console.WriteLine("Ошибка: ID должен быть числом.");
                 return;
@@ -114,7 +114,7 @@ namespace ConsoleApp11
             string levelInput = Console.ReadLine();
             int level;
 
-            if (int.TryParse(levelInput, out level)==false)
+            if (int.TryParse(levelInput, out level) == false)
             {
                 Console.WriteLine("Ошибка: Уровень должен быть числом.");
                 return;
@@ -131,9 +131,9 @@ namespace ConsoleApp11
             string input = Console.ReadLine();
             int id;
 
-            if (int.TryParse(input, out id)==true)
+            if (int.TryParse(input, out id) == true)
             {
-                if (_database.TryGetPlayer(id, out Player player)==true)
+                if (_database.TryGetPlayer(id, out Player player) == true)
                 {
                     player.Ban();
                     Console.WriteLine("Игрок забанен!");
@@ -173,7 +173,7 @@ namespace ConsoleApp11
 
             if (int.TryParse(input, out id) == true)
             {
-                if (_database.RemovePlayer(id)==true)
+                if (_database.RemovePlayer(id) == true)
                 {
                     Console.WriteLine("Игрок удален.");
                 }
@@ -187,11 +187,6 @@ namespace ConsoleApp11
 
     class Player
     {
-        public int Id { get; private set; }
-        public string Nickname { get; private set; }
-        public int Level { get; private set; }
-        public bool IsBanned { get; private set; }
-
         public Player(int id, string nickname, int level)
         {
             Id = id;
@@ -199,6 +194,11 @@ namespace ConsoleApp11
             Level = level;
             IsBanned = false;
         }
+
+        public int Id { get; private set; }
+        public string Nickname { get; private set; }
+        public int Level { get; private set; }
+        public bool IsBanned { get; private set; }
 
         public void Ban()
         {
@@ -220,7 +220,7 @@ namespace ConsoleApp11
             _players.Add(player);
         }
 
-        public bool RemovePlayer(int id)
+        public bool CanRemovePlayer(int id)
         {
             for (int i = 0; i < _players.Count; i++)
             {
@@ -246,6 +246,7 @@ namespace ConsoleApp11
         public void ShowAllBannedPlayers()
         {
             Console.WriteLine("Список забаненных игроков:");
+
             foreach (Player player in _players)
             {
                 if (player.IsBanned)
@@ -254,7 +255,7 @@ namespace ConsoleApp11
                 }
             }
         }
-
+        
         public bool TryGetPlayer(int id, out Player player)
         {
             player = null;
