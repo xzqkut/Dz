@@ -8,12 +8,12 @@ namespace ConsoleApp11
         static void Main(string[] args)
         {
             Database database = new Database();
-            GameManager manager = new GameManager(database);
+            AdminConsole manager = new AdminConsole(database);
             manager.Run();
         }
     }
 
-    class GameManager
+    class AdminConsole
     {
         private const string AddPlayerCommand = "1";
         private const string BanPlayerCommand = "2";
@@ -26,7 +26,7 @@ namespace ConsoleApp11
         private Database _database;
         private bool _isOpen = true;
 
-        public GameManager(Database database)
+        public AdminConsole(Database database)
         {
             _database = database;
         }
@@ -127,41 +127,27 @@ namespace ConsoleApp11
 
         private void BanPlayer()
         {
-            Console.Write("Введите ID игрока для бана: ");
-            string input = Console.ReadLine();
-            int id;
-
-            if (int.TryParse(input, out id) == true)
+            if (TryGetPlayerById(out Player player))
             {
-                if (_database.TryGetPlayer(id, out Player player) == true)
-                {
-                    player.Ban();
-                    Console.WriteLine("Игрок забанен!");
-                }
-                else
-                {
-                    Console.WriteLine("Игрок не найден");
-                }
+                player.Ban();
+                Console.WriteLine("Игрок забанен!");
+            }
+            else
+            {
+                Console.WriteLine("Игрок не найден");
             }
         }
 
         private void UnbanPlayer()
         {
-            Console.Write("Введите ID игрока для разбана: ");
-            string input = Console.ReadLine();
-            int id;
-
-            if (int.TryParse(input, out id) == true)
+            if (TryGetPlayerById(out Player player))
             {
-                if (_database.TryGetPlayer(id, out Player player) == true)
-                {
-                    player.Unban();
-                    Console.WriteLine("Игрок разбанен!");
-                }
-                else
-                {
-                    Console.WriteLine("Игрок не найден");
-                }
+                player.Unban();
+                Console.WriteLine("Игрок разбанен!");
+            }
+            else
+            {
+                Console.WriteLine("Игрок не найден.");
             }
         }
 
@@ -173,7 +159,7 @@ namespace ConsoleApp11
 
             if (int.TryParse(input, out id) == true)
             {
-                if (_database.RemovePlayer(id) == true)
+                if (_database.CanRemovePlayer(id) == true)
                 {
                     Console.WriteLine("Игрок удален.");
                 }
@@ -182,6 +168,20 @@ namespace ConsoleApp11
                     Console.WriteLine("Игрок не найден.");
                 }
             }
+        }
+        private bool TryGetPlayerById(out Player player)
+        {
+            Console.Write("Введите ID игрока: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
+            {
+                return _database.TryGetPlayer(id, out player);
+            }
+
+            Console.WriteLine("Ошибка: ID должен быть числом.");
+            player = null;
+            return false;
         }
     }
 
@@ -255,7 +255,7 @@ namespace ConsoleApp11
                 }
             }
         }
-        
+
         public bool TryGetPlayer(int id, out Player player)
         {
             player = null;
