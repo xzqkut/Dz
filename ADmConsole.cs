@@ -8,12 +8,12 @@ namespace ConsoleApp11
         static void Main(string[] args)
         {
             Database database = new Database();
-            AdminConsole manager = new AdminConsole(database);
+            DatabaseView manager = new DatabaseView(database);
             manager.Run();
         }
     }
 
-    class AdminConsole
+    class DatabaseView
     {
         private const string AddPlayerCommand = "1";
         private const string BanPlayerCommand = "2";
@@ -26,14 +26,16 @@ namespace ConsoleApp11
         private Database _database;
         private bool _isOpen = true;
 
-        public AdminConsole(Database database)
+        public DatabaseView(Database database)
         {
             _database = database;
         }
 
         public void Run()
         {
-            while (_isOpen)
+            bool IsOpen = true;
+
+            while (IsOpen)
             {
                 ShowMenu();
 
@@ -43,7 +45,7 @@ namespace ConsoleApp11
                 switch (input)
                 {
                     case AddPlayerCommand:
-                        AddNewPlayer();
+                        AddPlayer();
                         break;
 
                     case BanPlayerCommand:
@@ -89,7 +91,7 @@ namespace ConsoleApp11
             Console.WriteLine($"{ExitCommand} - Выход");
         }
 
-        private void AddNewPlayer()
+        private void AddPlayer()
         {
             Console.Write("Присвойте ID игроку: ");
             string idInput = Console.ReadLine();
@@ -127,27 +129,47 @@ namespace ConsoleApp11
 
         private void BanPlayer()
         {
-            if (TryGetPlayerById(out Player player))
+            Console.Write("Введите ID игрока для бана: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
             {
-                player.Ban();
-                Console.WriteLine("Игрок забанен!");
+                if (_database.TryGetPlayer(id, out Player player))
+                {
+                    player.Ban();
+                    Console.WriteLine("Игрок забанен!");
+                }
+                else
+                {
+                    Console.WriteLine("Игрок не найден.");
+                }
             }
             else
             {
-                Console.WriteLine("Игрок не найден");
+                Console.WriteLine("Ошибка: ID должен быть числом.");
             }
         }
 
         private void UnbanPlayer()
         {
-            if (TryGetPlayerById(out Player player))
+            Console.Write("Введите ID игрока для разбана: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out int id))
             {
-                player.Unban();
-                Console.WriteLine("Игрок разбанен!");
+                if (_database.TryGetPlayer(id, out Player player))
+                {
+                    player.Unban();
+                    Console.WriteLine("Игрок разбанен!");
+                }
+                else
+                {
+                    Console.WriteLine("Игрок не найден.");
+                }
             }
             else
             {
-                Console.WriteLine("Игрок не найден.");
+                Console.WriteLine("Ошибка: ID должен быть числом.");
             }
         }
 
@@ -159,7 +181,7 @@ namespace ConsoleApp11
 
             if (int.TryParse(input, out id) == true)
             {
-                if (_database.CanRemovePlayer(id) == true)
+                if (_database.IsPlayerRemovable(id) == true)
                 {
                     Console.WriteLine("Игрок удален.");
                 }
@@ -168,20 +190,6 @@ namespace ConsoleApp11
                     Console.WriteLine("Игрок не найден.");
                 }
             }
-        }
-        private bool TryGetPlayerById(out Player player)
-        {
-            Console.Write("Введите ID игрока: ");
-            string input = Console.ReadLine();
-
-            if (int.TryParse(input, out int id))
-            {
-                return _database.TryGetPlayer(id, out player);
-            }
-
-            Console.WriteLine("Ошибка: ID должен быть числом.");
-            player = null;
-            return false;
         }
     }
 
@@ -220,7 +228,7 @@ namespace ConsoleApp11
             _players.Add(player);
         }
 
-        public bool CanRemovePlayer(int id)
+        public bool IsPlayerRemovable(int id)
         {
             for (int i = 0; i < _players.Count; i++)
             {
