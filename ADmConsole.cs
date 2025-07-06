@@ -19,8 +19,7 @@ namespace ConsoleApp11
         private const string BanPlayerCommand = "2";
         private const string UnbanPlayerCommand = "3";
         private const string ShowAllPlayersCommand = "4";
-        private const string ShowbannedPlayersCommand = "5";
-        private const string RemovePlayerCommand = "6";
+        private const string RemovePlayerCommand = "5";
         private const string ExitCommand = "0";
 
         private Database _database;
@@ -33,9 +32,8 @@ namespace ConsoleApp11
 
         public void Run()
         {
-            bool IsOpen = true;
 
-            while (IsOpen)
+            while (_isOpen)
             {
                 ShowMenu();
 
@@ -60,10 +58,6 @@ namespace ConsoleApp11
                         _database.ShowAllPlayers();
                         break;
 
-                    case ShowbannedPlayersCommand:
-                        _database.ShowAllBannedPlayers();
-                        break;
-
                     case RemovePlayerCommand:
                         RemovePlayer();
                         break;
@@ -86,7 +80,6 @@ namespace ConsoleApp11
             Console.WriteLine($"{BanPlayerCommand} - Забанить игрока");
             Console.WriteLine($"{UnbanPlayerCommand}- Разбанить игрока");
             Console.WriteLine($"{ShowAllPlayersCommand} - Показать всех игроков");
-            Console.WriteLine($"{ShowbannedPlayersCommand} - Показать забаненных игроков");
             Console.WriteLine($"{RemovePlayerCommand} - Удалить игрока");
             Console.WriteLine($"{ExitCommand} - Выход");
         }
@@ -94,16 +87,14 @@ namespace ConsoleApp11
         private void AddPlayer()
         {
             Console.Write("Присвойте ID игроку: ");
-            string idInput = Console.ReadLine();
-            int id;
 
-            if (int.TryParse(idInput, out id) == false)
+            if (TryReadId(out int id) == false)
             {
                 Console.WriteLine("Ошибка: ID должен быть числом.");
                 return;
             }
 
-            if (_database.IsIdTaken(id))
+            if (_database.ContainsId(id))
             {
                 Console.WriteLine("Ошибка: Игрок с таким ID уже существует.");
                 return;
@@ -114,8 +105,8 @@ namespace ConsoleApp11
 
             Console.Write("С каким уровнем появится его персонаж?: ");
             string levelInput = Console.ReadLine();
-            int level;
 
+            int level;
             if (int.TryParse(levelInput, out level) == false)
             {
                 Console.WriteLine("Ошибка: Уровень должен быть числом.");
@@ -129,10 +120,7 @@ namespace ConsoleApp11
 
         private void BanPlayer()
         {
-            Console.Write("Введите ID игрока для бана: ");
-            string input = Console.ReadLine();
-
-            if (int.TryParse(input, out int id))
+            if (TryReadId(out int id))
             {
                 if (_database.TryGetPlayer(id, out Player player))
                 {
@@ -152,10 +140,7 @@ namespace ConsoleApp11
 
         private void UnbanPlayer()
         {
-            Console.Write("Введите ID игрока для разбана: ");
-            string input = Console.ReadLine();
-
-            if (int.TryParse(input, out int id))
+            if (TryReadId(out int id))
             {
                 if (_database.TryGetPlayer(id, out Player player))
                 {
@@ -175,20 +160,37 @@ namespace ConsoleApp11
 
         private void RemovePlayer()
         {
-            Console.Write("Введите ID игрока для удаления: ");
-            string input = Console.ReadLine();
-            int id;
-
-            if (int.TryParse(input, out id) == true)
+            if (TryReadId(out int id))
             {
-                if (_database.IsPlayerRemovable(id) == true)
+                if (_database.TryGetPlayer(id, out Player player))
                 {
+                    _database.RemovePlayer(player);
                     Console.WriteLine("Игрок удален.");
                 }
                 else
                 {
                     Console.WriteLine("Игрок не найден.");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка! ID должен быть числом");
+            }
+        }
+
+        private bool TryReadId(out int id)
+        {
+            Console.WriteLine("Введите ID игрока: ");
+            string input = Console.ReadLine();
+
+            if(int.TryParse(input, out id) == true)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Ошибка! ID игрока должен состоять из чисел");
+                return false;
             }
         }
     }
@@ -197,25 +199,25 @@ namespace ConsoleApp11
     {
         public Player(int id, string nickname, int level)
         {
-            Id = id;
-            Nickname = nickname;
-            Level = level;
-            IsBanned = false;
+            _id = id;
+            _nickname = nickname;
+            _level = level;
+            _isbanned = false;
         }
 
-        public int Id { get; private set; }
-        public string Nickname { get; private set; }
-        public int Level { get; private set; }
-        public bool IsBanned { get; private set; }
+        public int _id { get; private set; }
+        public string _nickname { get; private set; }
+        public int _level { get; private set; }
+        public bool _isbanned { get; private set; }
 
         public void Ban()
         {
-            IsBanned = true;
+            _isbanned = true;
         }
 
         public void Unban()
         {
-            IsBanned = false;
+            _isbanned = false;
         }
     }
 
@@ -228,18 +230,9 @@ namespace ConsoleApp11
             _players.Add(player);
         }
 
-        public bool IsPlayerRemovable(int id)
+        public bool RemovePlayer(Player player)
         {
-            for (int i = 0; i < _players.Count; i++)
-            {
-                if (_players[i].Id == id)
-                {
-                    _players.RemoveAt(i);
-                    return true;
-                }
-            }
-
-            return false;
+            return _players.Remove(player);
         }
 
         public void ShowAllPlayers()
@@ -247,20 +240,7 @@ namespace ConsoleApp11
             Console.WriteLine("Все игроки:");
             foreach (Player player in _players)
             {
-                Console.WriteLine($"Ник: {player.Nickname}, ID: {player.Id}, Уровень: {player.Level}, Забанен: {player.IsBanned}");
-            }
-        }
-
-        public void ShowAllBannedPlayers()
-        {
-            Console.WriteLine("Список забаненных игроков:");
-
-            foreach (Player player in _players)
-            {
-                if (player.IsBanned)
-                {
-                    Console.WriteLine($"Ник: {player.Nickname}, ID: {player.Id}");
-                }
+                Console.WriteLine($"Ник: {player._nickname}, ID: {player._id}, Уровень: {player._level}, Забанен: {player._isbanned}");
             }
         }
 
@@ -270,7 +250,7 @@ namespace ConsoleApp11
 
             foreach (Player receivedPlayer in _players)
             {
-                if (receivedPlayer.Id == id)
+                if (receivedPlayer._id == id)
                 {
                     player = receivedPlayer;
                     return true;
@@ -280,11 +260,11 @@ namespace ConsoleApp11
             return false;
         }
 
-        public bool IsIdTaken(int id)
+        public bool ContainsId(int id)
         {
             foreach (Player player in _players)
             {
-                if (player.Id == id)
+                if (player._id == id)
                 {
                     return true;
                 }
