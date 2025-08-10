@@ -24,25 +24,25 @@ namespace ConsoleApp18
 
     class Croupier
     {
-        private Deck deck;
-        private Player player;
+        private Deck _deck;
+        private Player _player;
 
         public Croupier()
         {
-            deck = new Deck();
-            player = new Player();
+            _deck = new Deck();
+            _player = new Player();
         }
 
         public void ShowPlayerCards()
         {
             Console.WriteLine("\nКарты игрока:");
-            player.ShowCards();
+            _player.ShowCards();
         }
 
         public void DealCards(int count)
         {
-            List<Card> cards = deck.DrawCards(count);
-            player.TakeCards(cards);
+            List<Card> cards = _deck.DrawCards(count);
+            _player.TakeCards(cards);
 
         }
 
@@ -52,7 +52,7 @@ namespace ConsoleApp18
 
     class Deck
     {
-        private List<Card> cards = new List<Card>();
+        private List<Card> _cards = new List<Card>();
         private Random random = new Random();
 
         public Deck()
@@ -64,7 +64,7 @@ namespace ConsoleApp18
             {
                 foreach (string value in values)
                 {
-                    cards.Add(new Card(suit, value));
+                    _cards.Add(new Card(suit, value));
                 }
             }
 
@@ -73,11 +73,11 @@ namespace ConsoleApp18
 
         public void Shuffle()
         {
-            int totalCards = cards.Count;
+            int totalCards = _cards.Count;
             for (int i = totalCards - 1; i > 0; i--)
             {
                 int randomIndex = random.Next(i + 1);
-                (cards[i], cards[randomIndex]) = (cards[randomIndex], cards[i]);
+                (_cards[i], _cards[randomIndex]) = (_cards[randomIndex], _cards[i]);
             }
         }
 
@@ -87,11 +87,11 @@ namespace ConsoleApp18
 
             for (int i = 0; i < count; i++)
             {
-                if(cards.Count==0)
+                if(_cards.Count==0)
                     break;
 
-                hand.Add(cards[0]);
-                cards.RemoveAt(0);
+                hand.Add(_cards[0]);
+                _cards.RemoveAt(0);
             }
             return hand;
         }
@@ -131,8 +131,8 @@ namespace ConsoleApp18
             Value = value;
         }
 
-        public string Suit { get; private set}
-        public string Value { get; private set}
+        public string Suit { get; private set; }
+        public string Value { get; private set; }
 
         public override string ToString()
         {
