@@ -8,17 +8,7 @@ namespace ConsoleApp18
         static void Main(string[] args)
         {
             Croupier croupier = new Croupier();
-            Console.WriteLine("Сколько карт выдать игроку?");
-
-            if (int.TryParse(Console.ReadLine(), out int cardCount))
-            {
-                croupier.DealCards(cardCount);
-                croupier.ShowPlayerCards();
-            }
-            else
-            {
-                Console.WriteLine("Некоретное число");
-            }
+            TransferCard();
         }
     }
 
@@ -41,13 +31,24 @@ namespace ConsoleApp18
 
         public void DealCards(int count)
         {
-            List<Card> cards = _deck.DrawCards(count);
+            List<Card> cards = _deck.GiveCards(count);
             _player.TakeCards(cards);
-
         }
 
+        public void TransferCard()
+        {
+            Console.WriteLine("Сколько карт выдать игроку?");
 
-
+            if (int.TryParse(Console.ReadLine(), out int cardCount))
+            {
+                croupier.DealCards(cardCount);
+                croupier.ShowPlayerCards();
+            }
+            else
+            {
+                Console.WriteLine("Некоретное число");
+            }
+        }
     }
 
     class Deck
@@ -74,6 +75,7 @@ namespace ConsoleApp18
         public void Shuffle()
         {
             int totalCards = _cards.Count;
+
             for (int i = totalCards - 1; i > 0; i--)
             {
                 int randomIndex = random.Next(i + 1);
@@ -81,7 +83,7 @@ namespace ConsoleApp18
             }
         }
 
-        public List<Card> DrawCards(int count)
+        public List<Card> GiveCards(int count)
         {
             List<Card> hand = new List<Card>();
 
@@ -93,6 +95,7 @@ namespace ConsoleApp18
                 hand.Add(_cards[0]);
                 _cards.RemoveAt(0);
             }
+
             return hand;
         }
     }
