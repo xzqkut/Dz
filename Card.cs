@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleApp18
+namespace CARDs
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Croupier croupier = new Croupier();
-            TransferCard();
+            croupier.TransferCard();
         }
     }
 
@@ -41,8 +41,8 @@ namespace ConsoleApp18
 
             if (int.TryParse(Console.ReadLine(), out int cardCount))
             {
-                croupier.DealCards(cardCount);
-                croupier.ShowPlayerCards();
+                DealCards(cardCount);
+                ShowPlayerCards();
             }
             else
             {
@@ -89,7 +89,7 @@ namespace ConsoleApp18
 
             for (int i = 0; i < count; i++)
             {
-                if(_cards.Count==0)
+                if (_cards.Count == 0)
                     break;
 
                 hand.Add(_cards[0]);
@@ -143,3 +143,5 @@ namespace ConsoleApp18
         }
     }
 }
+    
+
