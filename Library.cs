@@ -7,66 +7,39 @@ namespace Windows
     {
         static void Main(string[] args)
         {
-            bool isOpen = true;
 
-           Library library = new Library();
-            
-            while (isOpen)
-            {
-                Console.WriteLine("Добро пожаловать в библиотеку!\n Отправьте  в строку номер команды");
-                Console.WriteLine($"Команды Меню:\n1)Показать все книги\n2)Добавить книгу\n3)Поиск по названию\n4)Поиск по автору\n5)Отдать книгу\n6)Выход.");
-
-                string userInput = Console.ReadLine();
-                Console.Clear();
-                switch (userInput)
-                {
-                    case "1":
-                        library.ShowAllBook();
-                        break;
-                    case "2":
-                        library.AddBooks();
-                        break;
-                    case "3":
-                        string bookName = Console.ReadLine();
-                        library.SearchByName(bookName);
-                        break;
-                    case "4":
-                       string author = Console.ReadLine();
-                        library.SearchByAuthor(author);
-                        break;
-                    case "5":
-                        library.PutBookBack();
-                        break;
-                    case "6":
-                        isOpen= false;
-                        break;
-                    default:
-                        Console.WriteLine("Нет такого действия");
-                        break;
-                }
-            }
+            Library library = new Library();
+            library.Run(library);
         }
     }
 
     class Book
     {
-        public string NameBook { get; private set; }
-        public string Author { get; private set; }
-        public int Years { get; private set; }
-
         public Book(string nameBook, string author, int years)
         {
-            NameBook = nameBook;
-            Author = author;
-            Years = years;
+            _nameBook = nameBook;
+            _author = author;
+            _years = years;
         }
+
+        public string _nameBook { get; private set; }
+        public string _author { get; private set; }
+        public int _years { get; private set; }
     }
 
     class Library
     {
-        public List<Book> Books = new List<Book>();
+        private const string ShowAllBookCommand = "1";
+        private const string AddBooksCommand = "2";
+        private const string SearchByNameCommand = "3";
+        private const string SearchByAuthorCommand = "4";
+        private const string PutBookBackCommand = "5";
+        private const string ExitCommand = "6";
 
-        public void ShowAllBook()
+        private bool _isOpen = true;
+        private List<Book> Books = new List<Book>();
+
+        private void ShowAllBook()
         {
             Console.WriteLine("СПИСОК ВСЕХ КНИГ В НАЛИЧИИ\n\n");
             Books.Add(new Book("Капитанская дочка", "А.С Пушкин", 1836));
@@ -78,12 +51,11 @@ namespace Windows
 
             foreach (var books in Books)
             {
-                Console.WriteLine($"Название книги:{books.NameBook}--|Год выпуска:{books.Years}--|Автор:{books.Author}\n");
+                Console.WriteLine($"Название книги:{books._nameBook}--|Год выпуска:{books._years}--|Автор:{books._author}\n");
             }
-
         }
 
-        public void AddBooks()
+        private void AddBooks()
         {
             Console.WriteLine("Для добавления книги в библиотеку следуйте инструкции");
 
@@ -97,17 +69,17 @@ namespace Windows
             Books.Add(new Book(bookName, authorName, yearsBook));
         }
 
-        public void SearchByName(string name)
+        private void SearchByName()
         {
             Console.WriteLine("Введите название интересующей книги:");
 
-            name = Console.ReadLine();
+            string name = Console.ReadLine();
 
             foreach (Book book in Books)
             {
-                if (book.NameBook.Equals(name))
+                if (book._nameBook.Equals(name))
                 {
-                    name = book.NameBook;
+                    name = book._nameBook;
                     Console.WriteLine($"Книга с таким названием есть.\n{name}");
                 }
                 else
@@ -117,24 +89,24 @@ namespace Windows
             }
         }
 
-        public void SearchByAuthor(string author)
+        private void SearchByAuthor()
         {
             Console.WriteLine("#Поиск книги по автору#\nВведите имя автора");
 
-            author = Console.ReadLine();
+            string author = Console.ReadLine();
 
             foreach (Book book in Books)
             {
-                if (book.Author.Equals(author))
+                if (book._author.Equals(author))
                 {
-                    author = book.Author;
+                    author = book._author;
 
                     Console.WriteLine($"{author}");
                 }
             }
         }
 
-        public void PutBookBack()
+        private void PutBookBack()
         {
             Console.WriteLine("Для возврата книги напишите ее название");
 
@@ -144,21 +116,59 @@ namespace Windows
 
             foreach (Book book in Books)
             {
-                if (book.NameBook.Equals(choiceBookForRemove))
+                if (book._nameBook.Equals(choiceBookForRemove))
                 {
                     bookToRemove = book;
                     break;
-                } 
+                }
             }
 
-            if(bookToRemove!= null)
+            if (bookToRemove != null)
             {
                 Books.Remove(bookToRemove);
-                Console.WriteLine($"Книга {bookToRemove.NameBook} успешно возвращена!");
+                Console.WriteLine($"Книга {bookToRemove._nameBook} успешно возвращена!");
             }
             else
             {
                 Console.WriteLine("Такой книги нет.");
+            }
+        }
+
+        public void Run(Library library)
+        {
+
+
+            while (_isOpen)
+            {
+                Console.WriteLine("Добро пожаловать в библиотеку!\n Отправьте  в строку номер команды");
+                Console.WriteLine($"Команды Меню:\n{ShowAllBookCommand})Показать все книги\n{AddBooksCommand})Добавить книгу\n{SearchByNameCommand})Поиск по названию\n{SearchByAuthorCommand})Поиск по автору\n{PutBookBackCommand})Отдать книгу\n{ExitCommand})Выход.");
+
+                string userInput = Console.ReadLine();
+                Console.Clear();
+                switch (userInput)
+                {
+                    case ShowAllBookCommand:
+                        library.ShowAllBook();
+                        break;
+                    case AddBooksCommand:
+                        library.AddBooks();
+                        break;
+                    case SearchByNameCommand:
+                        library.SearchByName();
+                        break;
+                    case SearchByAuthorCommand:
+                        library.SearchByAuthor();
+                        break;
+                    case PutBookBackCommand:
+                        library.PutBookBack();
+                        break;
+                    case ExitCommand:
+                        _isOpen = false;
+                        break;
+                    default:
+                        Console.WriteLine("Нет такого действия");
+                        break;
+                }
             }
         }
     }
