@@ -30,6 +30,9 @@ namespace Windows
 
     class Library
     {
+        private bool _isOpen = true;
+        private List<Book> Books = new List<Book>();
+
         public Library()
         {
             Books.Add(new Book("Капитанская дочка", "А.С Пушкин", 1836));
@@ -39,9 +42,6 @@ namespace Windows
             Books.Add(new Book("12 Стульев", "Илья Ильф и Евгений Петров", 1927));
             Books.Add(new Book("Анна Каренина", "Л.Н Толстой", 1836));
         }
-
-        private bool _isOpen = true;
-        private List<Book> Books = new List<Book>();
 
         private void ShowAllBook()
         {
@@ -113,7 +113,7 @@ namespace Windows
             }
         }
 
-        private void PutBookBack(Library library)
+        private void PutBookBack()
         {
             for (int i = 0; i < Books.Count; i++)
             {
@@ -173,7 +173,7 @@ namespace Windows
                         break;
 
                     case PutBookBackCommand:
-                        library.PutBookBack(library);
+                        library.PutBookBack();
                         break;
 
                     case ExitCommand:
