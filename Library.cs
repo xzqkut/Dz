@@ -18,14 +18,14 @@ namespace Windows
     {
         public Book(string nameBook, string author, int years)
         {
-            _nameBook = nameBook;
-            _author = author;
-            _years = years;
+            NameBook = nameBook;
+            Author = author;
+            Years = years;
         }
 
-        public string _nameBook { get; private set; }
-        public string _author { get; private set; }
-        public int _years { get; private set; }
+        public string NameBook { get; private set; }
+        public string Author { get; private set; }
+        public int Years { get; private set; }
     }
 
     class Library
@@ -46,12 +46,8 @@ namespace Windows
         private void ShowAllBook()
         {
             Console.WriteLine("СПИСОК ВСЕХ КНИГ В НАЛИЧИИ\n\n");
-            
-            for(int i = 0; i < Books.Count; i++)
-            {
-                Console.WriteLine($"№{i+1}##Название книги:{Books[i]._nameBook}##Автор:{Books[i]._author}##Год издания:{Books[i]._years}");
-                Console.WriteLine();
-            }
+
+            PrintBooks();
         }
 
         private void AddBook()
@@ -65,15 +61,14 @@ namespace Windows
             string authorName = Console.ReadLine();
 
             Console.WriteLine("Укажите +Год издания+");
-            int yearsBook = Convert.ToInt32(Console.ReadLine());
 
-            if (yearsBook <= 0&&string.IsNullOrWhiteSpace(bookName)&&string.IsNullOrWhiteSpace(authorName))
+            if (int.TryParse(Console.ReadLine(), out int yearsBook) && yearsBook > 0)
             {
-                Console.WriteLine("Некорректный ввод");
+                Books.Add(new Book(bookName, authorName, yearsBook));
             }
             else
             {
-                Books.Add(new Book(bookName, authorName, yearsBook));
+                Console.WriteLine("Некоректный ввод");
             }
         }
 
@@ -85,7 +80,7 @@ namespace Windows
 
             foreach (Book book in Books)
             {
-                if (book._nameBook.Equals(name))
+                if (book.NameBook.Equals(name))
                 {
                     Console.WriteLine($"Книга с таким названием есть.\n{name}");
                 }
@@ -104,36 +99,43 @@ namespace Windows
 
             foreach (Book book in Books)
             {
-                if (book._author.Equals(author))
+                if (book.Author.Equals(author))
                 {
-                    author = book._author;
+                    author = book.Author;
 
-                    Console.WriteLine($"{author} его книги {book._nameBook}");
+                    Console.WriteLine($"{author} его книги {book.NameBook}");
                 }
             }
         }
 
         private void PutBookBack()
         {
+            PrintBooks();
+
+            Console.WriteLine(new string('=', 100));
+
+            int value = Convert.ToInt32(Console.ReadLine()) - 1;
+
+            if (value >= 0 && value < Books.Count)
+            {
+                var removedBook = Books[value];
+                Books.RemoveAt(value);
+                Console.WriteLine($"Книга {removedBook.NameBook} была удалена");
+            }
+            else
+            {
+                Console.WriteLine("Некорректный номер.");
+            }
+        }
+
+        public void PrintBooks()
+        {
             for (int i = 0; i < Books.Count; i++)
             {
-                Console.WriteLine($"№{i + 1}##Название книги:{Books[i]._nameBook}##Автор:{Books[i]._author}##Год издания:{Books[i]._years} ");
+                var books = Books[i];
+                Console.WriteLine($"№{i + 1}##Название книги:{books.NameBook}##Автор:{books.Author}##Год издания:{books.Years} ");
                 Console.WriteLine();
             }
-            Console.WriteLine(new string( '=',100));
-
-            int value = Convert.ToInt32(Console.ReadLine())-1;
-
-            for(int i = 0;i < Books.Count;i++)
-            {
-                if (i==value)
-                {
-                    var removedBook = Books[i];
-                    Books.RemoveAt(i);
-                    Console.WriteLine($"Книга {removedBook._nameBook} была удалена");
-                    break;
-                }
-            } 
         }
 
         public void Run()
