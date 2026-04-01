@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 
 namespace ConsoleApp1
@@ -28,6 +29,9 @@ namespace ConsoleApp1
 
     class Arena
     {
+        private const int FightCommand = 1;
+        private const int ExitCommand =2;
+
         private List<Fighter> _fighters;
 
         public Arena()
@@ -43,23 +47,34 @@ namespace ConsoleApp1
 
         public void Work()
         {
-           
+            
+            bool isWorking = true;
 
-            Console.WriteLine("Добро пожаловать на арену\nВыберите бойцов");
-           
-           ShowFighters();
+            while (isWorking)
+            {
+                Console.Clear();
+                Console.WriteLine("Добро пожаловать на арену\nУчаствовать или убежать?-Введите 1 или 2");
+                Console.WriteLine($"{FightCommand} - Начать бой");
+                Console.WriteLine($"{ExitCommand} - Выход");
 
-            Console.WriteLine("Выберите первого бойца");
-
-            Fighter firstFighter = ChooseFighter();
-
-            Console.WriteLine("Выберите второго бойца");
-
-            Fighter secondFighter = ChooseFighter();
-
-            StartFight(firstFighter,secondFighter);
-           
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out int command))
+                {
+                    switch (command)
+                    {
+                        case FightCommand:
+                            Console.Clear();
+                            Menu();
+                            break;
+                        case ExitCommand:
+                            Console.WriteLine("Конец игре.");
+                            isWorking = false;
+                            break;
+                    }
+                }  
+            }
         }
+
         private void ShowFightersHealth(Fighter first, Fighter second)
         {
             Console.WriteLine($"{first.TypeFighter}: {first.Health} HP");
@@ -85,14 +100,49 @@ namespace ConsoleApp1
             }
             if (firstFighter.IsAlive())
             {
-                Console.WriteLine($"{firstFighter.TypeFighter} победил");
+                ShowWinner(firstFighter);
             }
             else
             {
-                Console.WriteLine($"{secondFighter.TypeFighter} победил");
+                ShowWinner(secondFighter);
             }
+
+            Console.WriteLine("\nНажмите любую клавишу чтобы вернуться в меню...");
+            Console.ReadKey();
+
+            firstFighter.Reset();
+            secondFighter.Reset();
+
         }
 
+        public void Menu()
+        {
+            Console.WriteLine("Вам предстоить выбрать бойцов для сражения.");
+            ShowFighters();
+
+            Console.WriteLine("\nВыберите первого бойца");
+
+            Fighter firstFighter = ChooseFighter();
+
+            Console.WriteLine("Выберите второго бойца");
+
+            Fighter secondFighter = ChooseFighter();
+
+            StartFight(firstFighter, secondFighter);
+
+        }
+
+        private void ShowWinner(Fighter fighter)
+        {
+            Console.Clear();
+
+            Console.ForegroundColor=ConsoleColor.Yellow;
+            Console.WriteLine("===================================");
+            Console.WriteLine($"        ПОБЕДИЛ {fighter.TypeFighter}");
+            Console.WriteLine("===================================");
+
+            Console.ResetColor();
+        }
         private Fighter ChooseFighter()
         {
             while (true)
@@ -126,15 +176,17 @@ namespace ConsoleApp1
     {
         private int _burnDamage = 0; 
         private int _burnTurns = 0;
-
+        
         public Fighter(int armor, int health, int damage, string typeFighter)
         {
             Armor = armor;
             Health = health;
             Damage = damage;
             TypeFighter = typeFighter;
+            MaxHealth = health;
         }
 
+        protected int MaxHealth { get; private set; }
         public int Armor {  get; private set; }
         public int Health { get; private set; }
         public int Damage { get; private set; }
@@ -155,6 +207,12 @@ namespace ConsoleApp1
             }
         }
 
+        public virtual void Reset()
+        {
+            Health = MaxHealth;
+            _burnDamage = 0;
+            _burnTurns = 0;
+        }
         public virtual void Attack(Fighter enemy)
         {
             enemy.TakeDamage(Damage);  
@@ -193,6 +251,7 @@ namespace ConsoleApp1
         
         public Mage(int armor,int health,int damage) : base(armor, health, damage, "МАГ")
         {  
+            
         }
 
         public override void Attack(Fighter enemy)
@@ -227,16 +286,15 @@ namespace ConsoleApp1
 
     class Barbarian : Fighter
     {
-        private int _maxHealth;
+        
 
         public Barbarian(int armor,int health,int damage):base(armor, health, damage, "ВАРВАР")
         {
-            _maxHealth = health;
         }
 
         public override void Attack(Fighter enemy)
         {
-            int lostHealth= _maxHealth - Health;
+            int lostHealth= MaxHealth - Health;
             int stackRage = lostHealth/100;
             
             if (stackRage >= 5)
